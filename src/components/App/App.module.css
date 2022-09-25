@@ -1,0 +1,13 @@
+.app {
+  max-width: 1265px;
+  min-width: 375px;
+  padding: 0 20px;
+  margin: 0 auto;
+  position: relative; 
+}
+
+@media (max-width: 800px) {
+  .app {
+    padding: 0;
+  }
+}

@@ -1,0 +1,18 @@
+.numbersBlock {
+  flex-basis: 160px;
+}
+.numder {
+  font-size: 66px;
+  font-weight: 700;
+  color: #3600F0;
+}
+.numdersText1 {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 101.5%;
+}
+.numdersText2 {
+  font-size: 18px;
+  line-height: 103.19%;
+  padding-top: 7px;
+}
