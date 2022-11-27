@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { HHOauthStrategy } from './strategies/hh.strategy';
 import { AuthController } from './auth.controller';
 
@@ -12,7 +12,6 @@ import { AuthController } from './auth.controller';
   imports: [
     UsersModule,
     PassportModule,
-    ConfigModule,
     JwtModule.registerAsync({
       useFactory: async () => {
         return {

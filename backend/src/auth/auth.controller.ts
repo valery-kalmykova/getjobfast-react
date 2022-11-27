@@ -2,14 +2,10 @@ import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { HHAuthGuard } from './guards/hh-auth.guard';
-import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-    private configService: ConfigService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   @UseGuards(HHAuthGuard)
   @Get('login')
@@ -30,8 +26,7 @@ export class AuthController {
     }
     const token = await this.authService.login(req.user);
     const { access_token } = token;
-    const host = this.configService.get<string>('HOST');
     res.cookie('authorization', access_token);
-    res.redirect(`http://${host}/login`);
+    res.redirect('http://45.84.224.70/login');
   }
 }
