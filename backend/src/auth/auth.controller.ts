@@ -26,8 +26,7 @@ export class AuthController {
     }
     const token = await this.authService.login(req.user);
     const { access_token } = token;
-    const baseUrl = process.env.HOST;
     res.cookie('authorization', access_token);
-    res.redirect(`http://${baseUrl}/login`);
+    res.redirect('http://45.84.224.70/login');
   }
 }
