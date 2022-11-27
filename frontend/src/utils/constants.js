@@ -1,0 +1,1 @@
+export const defaultMessage = 'Привет! Это тестовый отклик'

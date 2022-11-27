@@ -1,0 +1,22 @@
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('./fonts/Ubuntu/Ubuntu-Regular.ttf');
+}
+
+body {
+  margin: 0;  
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;  
+  padding: 0;
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  background-color: #0A3A21;
+  color: #061D23;
+  position: relative;  
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  nginx:
+    container_name: frontend
+    build:
+      context: ./
+      dockerfile: ./frontend/Dockerfile
+    ports:
+      - 80:80
+    restart: unless-stopped
+    networks: 
+      - front
+ 
+  backend:
+    container_name: backend
+    build:
+      context: ./backend    
+    restart: unless-stopped    
+    networks: 
+      - front
+    ports:
+      - 3000:3000
+    env_file: .env
+
+networks:
+  front:
+    driver: bridge

@@ -1,0 +1,184 @@
+.startMain {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.startTitle {
+  font-size: 92px;
+  color: #fcfcfa;
+}
+
+.startBtn {
+  height: 100px;
+  width: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fcfcfa;  
+  border-radius: 10px;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.startBtn:hover {
+  background-color: #E5D5CB;
+}
+
+.startBtnLink {
+  text-decoration: none;
+  color: #061D23;
+}
+
+.loginMain{
+  margin: 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginView {
+  max-height: 93vh;
+  width: 95vw;
+  max-width: 1400px;
+  background-color: #fcfcfa;  
+  display: flex;
+  overflow-y: scroll;
+  border-radius: 10px;
+}
+
+.loginView::-webkit-scrollbar {
+  width: 12px;               /* width of the entire scrollbar */
+}
+
+.loginView::-webkit-scrollbar-track {
+  background: #E5D5CB;        /* color of the tracking area */
+  border-radius: 10px;
+}
+
+.loginView::-webkit-scrollbar-thumb {
+  background-color: #BF705E;    /* color of the scroll thumb */
+  border-radius: 10px;       /* roundness of the scroll thumb */
+  /* border: 3px solid orange;  creates padding around scroll thumb */
+}
+
+.loginContent {
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.loginUser {
+  display: flex;
+  gap: 10px;
+  align-self: flex-end;
+  align-items: center;
+}
+
+.loginUserName {
+  text-decoration: none;
+  color: #061D23;
+}
+
+.loginUserName:hover {
+  color: #BF705E;
+}
+
+.loginUserLogout {
+  height: 30px;
+  width: 70px;
+  border: none;  
+  border-radius: 5px;
+  background-color: #BF705E;
+  cursor: pointer;
+}
+
+.loginUserLogout:hover {
+  background-color: #E5D5CB;
+}
+
+.loginTitle{
+  font-size: 30px;
+  margin-top: 0;
+}
+
+.loginBtns {
+  display: flex;
+  gap: 10px;
+}
+
+.loginBtn {
+  border: none;  
+  border-radius: 10px;
+  background-color: #BF705E;
+  min-height: 60px;
+  width: 300px;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.loginBtn:hover {
+  background-color: #E5D5CB;
+}
+
+.loginListResumes {
+  padding: 0; 
+  padding-bottom: 20px; 
+  margin: 0;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 5px;  
+  flex-wrap: wrap;
+}
+
+.loginListVacancies {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;  
+  margin-bottom: 40px;
+}
+
+.loginVacanciesBtns {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.loginVacanciesBtn {
+  border: 1px solid rgba(10, 58, 33, .2);  
+  border-radius: 10px;
+  min-height: 50px;
+  width: 200px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.BtnCheck {
+  background-color: #BF705E;
+}
+
+.BtnUnCheck {
+  background-color: transparent
+}
+
+.loginVacanciesBtn:hover {
+  background-color: #E5D5CB;
+}
+
+.loginTextarea {
+  margin-bottom: 40px;
+  padding: 10px;
+  font-size: 15px;
+  width: 95%;
+  border: 1px solid rgba(10, 58, 33, .2);
+  border-radius: 10px;
+}
