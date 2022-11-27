@@ -76,11 +76,11 @@ const LoginPage = () => {
         formData.append('vacancy_id', item.id);
         formData.append('message', message);
         console.log(message)  
-        // try {
-        //   sendMessage(token, formData)
-        // } catch(err) {
-        //   console.log(err)
-        // }  
+        try {
+          sendMessage(token, formData)
+        } catch(err) {
+          console.log(err)
+        }  
       }
     })
     loadVacancies(resumes[0].id)
