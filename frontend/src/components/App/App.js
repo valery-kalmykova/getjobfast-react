@@ -4,14 +4,18 @@ import { BrowserRouter as Router }from 'react-router-dom';
 import { Routes, Route }from 'react-router-dom';
 import HomePage from '../../pages/home';
 import LoginPage from '../../pages/login'
-import { UserContext, CheckedVacancies } from "../../utils/context";
+import { UserContext, VacanciesContext } from "../../utils/context";
 import { getOwnUser } from '../../utils/api';
-import { PrivateRoute } from '../PrivateRoute'
+import { PrivateRoute } from '../PrivateRoute';
+
+import "primereact/resources/themes/saga-green/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 
 function App() {
   const [cookies] = useCookies();
   const [userCtx, setUserCtx] = useState(null);
-  const [checkedVacancies, setCheckedVacancies] = useState(null);
+  const [vacancies, setVacancies] = useState(null);
 
   useEffect(() => {
     const token = cookies.authorization;
@@ -27,9 +31,9 @@ function App() {
 
   return (
     <UserContext.Provider value={[userCtx, setUserCtx]}>
-      <CheckedVacancies.Provider value={[checkedVacancies, setCheckedVacancies]}>
+      <VacanciesContext.Provider value={[vacancies, setVacancies]}>
         <ApplicationView /> 
-      </CheckedVacancies.Provider>       
+      </VacanciesContext.Provider>       
     </UserContext.Provider>
   );
 }
@@ -44,11 +48,13 @@ const ApplicationView = () => {
   return (    
     <Router>         
       <Routes>            
-        <Route exact path="/start" element={<HomePage />} />     
-        <Route path="/" element={<PrivateRoute/>}>
+        <Route exact path="/start" element={<HomePage />} />
+        <Route path="/" element={<LoginPage />}/>
+        <Route path="/login" element={<LoginPage />}/>
+        {/* <Route path="/" element={<PrivateRoute/>}>
           <Route path="/" element={<LoginPage />}/>
           <Route path="/login" element={<LoginPage />}/>
-        </Route>
+        </Route> */}
       </Routes>
     </Router> 
   )

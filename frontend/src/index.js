@@ -4,6 +4,10 @@ import { CookiesProvider } from "react-cookie";
 import './index.css';
 import App from './components/App/App';
 import reportWebVitals from './reportWebVitals';
+import { makeServer } from './mock/server.ts';
+
+// not use for prod
+makeServer({ environment: 'development' }); 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

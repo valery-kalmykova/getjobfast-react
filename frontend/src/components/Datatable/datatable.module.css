@@ -1,0 +1,9 @@
+.headerFlex {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.expandContainer {
+  padding-left: 50px;
+}

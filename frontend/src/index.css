@@ -8,11 +8,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;  
   padding: 0;
-  font-family: 'Ubuntu';
+  font-family: var(--font-family);
   font-style: normal;
   font-weight: 400;
-  background-color: #0A3A21;
-  color: #061D23;
+  background-color: var(--surface-ground);
+  color: #000;
   position: relative;  
 }
 
