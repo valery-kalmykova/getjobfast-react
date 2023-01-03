@@ -5,6 +5,7 @@ import './index.css';
 import App from './components/App/App';
 import reportWebVitals from './reportWebVitals';
 import { makeServer } from './mock/server.ts';
+import 'primeicons/primeicons.css';
 
 // not use for prod
 makeServer({ environment: 'development' }); 

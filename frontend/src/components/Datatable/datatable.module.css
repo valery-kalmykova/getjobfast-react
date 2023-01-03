@@ -7,3 +7,7 @@
 .expandContainer {
   padding-left: 50px;
 }
+
+.textCenter {
+  text-align: center !important;
+}

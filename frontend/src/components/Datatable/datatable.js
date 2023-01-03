@@ -5,6 +5,7 @@ import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { FilterMatchMode, FilterOperator } from "primereact/api";
 import { InputNumber } from 'primereact/inputnumber';
+import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import { VacanciesContext } from '../../utils/context';
 
 export const DatatableVacancies = () => {
@@ -13,7 +14,7 @@ export const DatatableVacancies = () => {
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    'salary': { value: null, matchMode: FilterMatchMode.LESS_THAN },
+    'has_test': { value: null, matchMode: FilterMatchMode.EQUALS },
   });
   const [expandedRows, setExpandedRows] = useState(null);
   
@@ -44,37 +45,33 @@ export const DatatableVacancies = () => {
   const header = renderHeader();
 
   const salaryBodyTemplate = (rowData) => {    
-    if (rowData.salary !== null) {
-      if (rowData.salary.from !== null && rowData.salary.to !== null) {      
-        return (
-          <React.Fragment>
-            <span>От {rowData.salary.from.toLocaleString()} до {rowData.salary.to.toLocaleString()}</span>
-            <span>&nbsp;{rowData.salary.currency !== 'RUR' ? rowData.salary.currency : ''}</span>
-          </React.Fragment>        
-        )
-      } else if (rowData.salary.from === null && rowData.salary.to !== null) {
-        return (
-          <React.Fragment>
-            <span>До {rowData.salary.to.toLocaleString()}</span>
-            <span>&nbsp;{rowData.salary.currency !== 'RUR' ? rowData.salary.currency : ''}</span>
-          </React.Fragment>        
-        )
-      } else if (rowData.salary.from !== null && rowData.salary.to === null) {
-        return (
-          <React.Fragment>
-            <span>От {rowData.salary.from.toLocaleString()}</span>
-            <span>&nbsp;{rowData.salary.currency !== 'RUR' ? rowData.salary.currency : ''}</span>
-          </React.Fragment>        
-        )
-      };     
+    if (rowData.salary !== null && rowData.salary.from !== null) {      
+      return (
+        <React.Fragment>
+          <span>{rowData.salary.from.toLocaleString()}</span>
+          <span>&nbsp;{rowData.salary.currency !== 'RUR' ? rowData.salary.currency : ''}</span>
+        </React.Fragment>        
+      )
     } else {
       return '-';
     };
   }
 
-  const salaryFilterTemplate = (options) => {
-    return <InputNumber value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} />
+  const testBodyTemplate = (rowData) => {    
+    if (rowData.has_test !== false) {      
+      return (
+        <React.Fragment>
+          <i className="pi pi-user-edit"></i>
+        </React.Fragment>        
+      )
+    } else {
+      return '';
+    };
   }
+
+  const testFilterTemplate = (options) => {
+    return <TriStateCheckbox value={options.value} onChange={(e) => options.filterCallback(e.value)} />
+}
 
   const rowExpansionTemplate = (rowData) => {
     return (
@@ -85,6 +82,11 @@ export const DatatableVacancies = () => {
         <p>{rowData.snippet.requirement}</p>
         <h4>График работы:</h4>
         <p>{rowData.schedule.name}</p>
+        { rowData.has_test &&
+        <>
+          <h4>Пройти тест на hh.ru:</h4>
+          <a href={rowData.has_test} target="_blank" rel="noreferrer">{rowData.has_test}</a> 
+        </> }
       </div>
     );
   }
@@ -116,8 +118,8 @@ export const DatatableVacancies = () => {
       ></Column>
       <Column field="name" header="Вакансия" sortable></Column>
       <Column field="employer.name" header="Работодатель" sortable></Column>
-      <Column field="salary" header="Зарплата" dataType="numeric" body={salaryBodyTemplate} ></Column>
-      {/* filter filterElement={salaryFilterTemplate} */}
+      <Column field="salary.from" header="Зарплата от" dataType="numeric" body={salaryBodyTemplate} sortable></Column>     
+      <Column field="has_test" header="С тестом" body={testBodyTemplate} className={styles.textCenter} filter filterElement={testFilterTemplate}></Column>
       <Column expander={allowExpansion} style={{ width: '3em' }} />
     </DataTable>
   );

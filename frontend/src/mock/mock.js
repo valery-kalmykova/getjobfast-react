@@ -719,7 +719,7 @@ export const vacancies = [
     premium: false,
     name: "Консультант по внедрению / Бизнес-аналитик",
     department: null,
-    has_test: false,
+    has_test: true,
     response_letter_required: false,
     area: { id: "1", name: "Москва", url: "https://api.hh.ru/areas/1" },
     salary: null,
