@@ -22,19 +22,36 @@ services:
     container_name: backend
     build:
       context: ./backend
-      dockerfile: ./Dockerfile.dev
+      dockerfile: ./Dockerfile
     restart: unless-stopped    
     networks:
       - back    
     ports:
       - 4000:4000
     env_file: .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - mongodb
+
+  nginx:
+    container_name: frontend
+    build:
+      context: ./
+      dockerfile: ./frontend/Dockerfile
+    ports:
+      - 80:80
+    restart: unless-stopped
+    env_file: .env
+    networks: 
+      - front
 
 networks:
   back:
     driver: bridge
-    
+  front:
+    driver: bridge
+
 volumes:
   mongodb_data_container:
