@@ -29,7 +29,7 @@ export class ApiController {
     return this.apiService.getResumes(accessToken);
   }
 
-  @Get('resumes/:resumes_id/similar_vacancies')
+  @Get('resumes/:resumes_id/similar_vacancies/:page')
   async getVacanciesSimilarToResume(
     @Req() req: any,
     @Param('resumes_id') resumes_id: string,
