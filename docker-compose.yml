@@ -1,28 +1,37 @@
 version: '3.9'
 
 services:
-  nginx:
-    container_name: frontend
-    build:
-      context: ./
-      dockerfile: ./frontend/Dockerfile
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    env_file:
+      - .env
+    restart: always
     ports:
-      - 80:80
-    restart: unless-stopped
-    networks: 
-      - front
+      - ${MONGO_PORT}:${MONGO_PORT}
+    volumes:
+      - mongodb_data_container:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGO_DATEBASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+    networks:
+      - back
  
   backend:
     container_name: backend
     build:
-      context: ./backend    
+      context: ./backend
+      dockerfile: ./Dockerfile.dev
     restart: unless-stopped    
-    networks: 
-      - front
+    networks:
+      - back    
     ports:
       - 4000:4000
     env_file: .env
+    depends_on:
+      - mongodb
 
 networks:
-  front:
+  back:
     driver: bridge

@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import styles from './styles.module.css'
-import { CheckedVacancies } from '../../utils/context'
+import { VacanciesContext } from '../../utils/context'
 
 export const Vacancies = () => {
-const [checkedVacancies, setCheckedVacancies] = useContext(CheckedVacancies);
+const [vacancies, setVacancies] = useContext(VacanciesContext);
 
 const toggleCheck = (id, has_test) => {
   if (has_test) return;
-  const newList = checkedVacancies.map((item) => {    
+  const newList = vacancies.map((item) => {    
     if(item.id === id) {
       if (!item.checked) {
         return { ...item, checked: true }
@@ -16,14 +16,14 @@ const toggleCheck = (id, has_test) => {
       }      
     } return item;
   })
-  setCheckedVacancies(newList);
+  setVacancies(newList);
 };
 
-  if(!checkedVacancies) {
+  if(!vacancies) {
     return null
   }
   
-  return checkedVacancies.map((item, index) => {
+  return vacancies.map((item, index) => {
     const { name, employer, id, has_test, apply_alternate_url, checked } = item;
 
     return (             

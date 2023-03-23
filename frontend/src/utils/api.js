@@ -32,8 +32,8 @@ export const getUserResumes = async (token) => {
     .then((data) => data);
 };
 
-export const getUserVacancies = async (token, resume_id) => {
-  return fetch(`${URL}/api/resumes/${resume_id}/similar_vacancies`, {
+export const getUserVacancies = async (token, resume_id, page) => {
+  return fetch(`${URL}/api/resumes/${resume_id}/similar_vacancies/${page}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

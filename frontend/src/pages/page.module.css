@@ -9,7 +9,6 @@
 
 .startTitle {
   font-size: 92px;
-  color: #fcfcfa;
 }
 
 .startBtn {
@@ -18,14 +17,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fcfcfa;  
+  background-color: var(--primary-400);
+  color: #fff;
   border-radius: 10px;
+  border: 5px solid var(--primary-400);
   font-size: 36px;
   font-weight: 700;
 }
 
 .startBtn:hover {
-  background-color: #E5D5CB;
+  background-color: var(--primary-300);
 }
 
 .startBtnLink {
@@ -42,10 +43,10 @@
 }
 
 .loginView {
-  max-height: 93vh;
+  max-height: 92vh;
   width: 95vw;
   max-width: 1400px;
-  background-color: #fcfcfa;  
+  background-color: var(--surface-section);  
   display: flex;
   overflow-y: scroll;
   border-radius: 10px;
@@ -56,12 +57,12 @@
 }
 
 .loginView::-webkit-scrollbar-track {
-  background: #E5D5CB;        /* color of the tracking area */
+  background: var(--surface-200);        /* color of the tracking area */
   border-radius: 10px;
 }
 
 .loginView::-webkit-scrollbar-thumb {
-  background-color: #BF705E;    /* color of the scroll thumb */
+  background-color: var(--surface-400);    /* color of the scroll thumb */
   border-radius: 10px;       /* roundness of the scroll thumb */
   /* border: 3px solid orange;  creates padding around scroll thumb */
 }
@@ -87,7 +88,7 @@
 }
 
 .loginUserName:hover {
-  color: #BF705E;
+  color: var(--green-700);
 }
 
 .loginUserLogout {
@@ -104,13 +105,14 @@
 }
 
 .loginTitle{
-  font-size: 30px;
-  margin-top: 0;
+  font-size: 24px;
+  margin-top: 24px;
 }
 
 .loginBtns {
   display: flex;
   gap: 10px;
+  margin-top: 24px;
 }
 
 .loginBtn {
@@ -175,10 +177,16 @@
 }
 
 .loginTextarea {
-  margin-bottom: 40px;
-  padding: 10px;
-  font-size: 15px;
   width: 95%;
-  border: 1px solid rgba(10, 58, 33, .2);
-  border-radius: 10px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.pagination__btn {
+  cursor: pointer;
 }

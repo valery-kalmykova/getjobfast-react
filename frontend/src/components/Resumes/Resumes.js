@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from './styles.module.css'
+import styles from './styles.module.css';
+import { Card } from 'primereact/card';
 
 export const Resumes = ({ resumes, onClick }) => {
   
@@ -11,16 +12,14 @@ export const Resumes = ({ resumes, onClick }) => {
   return resumes.map((item, index) => {
     const { id, title, checked } = item;    
 
-    return (       
-      <li key={index} className={styles.li}>
-        <div
-          onClick={onClick}
-          id={id}
-          className={styles.card}
-          style={{ backgroundColor: checked ? '#E5D5CB' : 'transparent' }} >
-            {title}
-          </div>
-      </li>               
+    return ( 
+      <Card
+        onClick={onClick}
+        id={id}
+        key={index}
+        className={checked ? styles.cardChecked : styles.card}>
+          {title}
+        </Card>              
     )
   })
 }
