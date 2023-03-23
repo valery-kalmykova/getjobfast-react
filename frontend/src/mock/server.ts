@@ -16,7 +16,7 @@ export function makeServer({ environment = 'development' } = {}) {
       this.get('http://localhost:4000/api/resumes/mine', (schema) => {
         return resumes;
       });
-      this.get('http://localhost:4000/api/resumes/:id/similar_vacancies', (schema) => {
+      this.get('http://localhost:4000/api/resumes/:id/similar_vacancies/:page', (schema) => {
         return vacancies;
       });
     },

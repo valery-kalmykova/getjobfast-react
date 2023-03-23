@@ -1,5 +1,4 @@
-// const URL = `http://${process.env.REACT_APP_HOST}:4000`;
-const URL = `http://localhost:4000`;
+const URL = `http://${process.env.REACT_APP_HOST}:4000`;
 const checkResponse = (res) => {
   if (res.ok || res.created) {
     return res.json();
@@ -33,8 +32,8 @@ export const getUserResumes = async (token) => {
     .then((data) => data);
 };
 
-export const getUserVacancies = async (token, resume_id) => {
-  return fetch(`${URL}/api/resumes/${resume_id}/similar_vacancies`, {
+export const getUserVacancies = async (token, resume_id, page) => {
+  return fetch(`${URL}/api/resumes/${resume_id}/similar_vacancies/${page}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

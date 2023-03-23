@@ -6,15 +6,15 @@ import { InputText } from "primereact/inputtext";
 import { FilterMatchMode, FilterOperator } from "primereact/api";
 import { InputNumber } from 'primereact/inputnumber';
 import { TriStateCheckbox } from 'primereact/tristatecheckbox';
-import { VacanciesContext } from '../../utils/context';
+import { VacanciesContext, SelectedVacanciesContext } from '../../utils/context';
 
 export const DatatableVacancies = () => {
   const [vacancies, setVacancies] = useContext(VacanciesContext);
-  const [selectedVacancies, setSelectedVacancies] = useState(null);
+  const [selectedVacancies, setSelectedVacancies] = useContext(SelectedVacanciesContext);
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    'has_test': { value: null, matchMode: FilterMatchMode.EQUALS },
+    // 'has_test': { value: null, matchMode: FilterMatchMode.EQUALS },
   });
   const [expandedRows, setExpandedRows] = useState(null);
   
@@ -69,9 +69,21 @@ export const DatatableVacancies = () => {
     };
   }
 
-  const testFilterTemplate = (options) => {
-    return <TriStateCheckbox value={options.value} onChange={(e) => options.filterCallback(e.value)} />
-}
+  const responsedBodyTemplate = (rowData) => {
+    if (rowData.relations.includes("got_response")) {      
+      return (
+        <React.Fragment>
+          <i className="pi pi-user-edit"></i>
+        </React.Fragment>        
+      )
+    } else {
+      return '';
+    };
+  }
+
+//   const testFilterTemplate = (options) => {
+//     return <TriStateCheckbox value={options.value} onChange={(e) => options.filterCallback(e.value)} />
+// }
 
   const rowExpansionTemplate = (rowData) => {
     return (
@@ -85,7 +97,7 @@ export const DatatableVacancies = () => {
         { rowData.has_test &&
         <>
           <h4>Пройти тест на hh.ru:</h4>
-          <a href={rowData.has_test} target="_blank" rel="noreferrer">{rowData.has_test}</a> 
+          <a href={rowData.apply_alternate_url} target="_blank" rel="noreferrer">{rowData.apply_alternate_url}</a> 
         </> }
       </div>
     );
@@ -98,9 +110,9 @@ export const DatatableVacancies = () => {
   return (
     <DataTable
       value={vacancies}
-      paginator
-      rows={10}
-      rowsPerPageOptions={[10, 25, 50, 200]}
+      // paginator
+      rows={100}
+      // rowsPerPageOptions={[10, 25, 50, 200]}
       header={header}
       filters={filters}
       expandedRows={expandedRows}
@@ -119,7 +131,9 @@ export const DatatableVacancies = () => {
       <Column field="name" header="Вакансия" sortable></Column>
       <Column field="employer.name" header="Работодатель" sortable></Column>
       <Column field="salary.from" header="Зарплата от" dataType="numeric" body={salaryBodyTemplate} sortable></Column>     
-      <Column field="has_test" header="С тестом" body={testBodyTemplate} className={styles.textCenter} filter filterElement={testFilterTemplate}></Column>
+      {/* <Column field="has_test" header="С тестом" body={testBodyTemplate} className={styles.textCenter} filter filterElement={testFilterTemplate}></Column> */}
+      <Column field="has_test" header="С тестом" body={testBodyTemplate} className={styles.textCenter} sortable></Column>
+      <Column field="relations" header="Откликнулся" body={responsedBodyTemplate} className={styles.textCenter} sortable></Column>
       <Column expander={allowExpansion} style={{ width: '3em' }} />
     </DataTable>
   );

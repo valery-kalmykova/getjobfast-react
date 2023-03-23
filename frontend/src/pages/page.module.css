@@ -179,3 +179,14 @@
 .loginTextarea {
   width: 95%;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.pagination__btn {
+  cursor: pointer;
+}

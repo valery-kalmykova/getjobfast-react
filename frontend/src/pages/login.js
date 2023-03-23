@@ -2,7 +2,11 @@ import React, { useEffect, useState, useContext } from "react";
 import { useCookies } from "react-cookie";
 import { getUserResumes, getUserVacancies, sendMessage } from "../utils/api";
 import { Resumes } from "../components/Resumes/Resumes";
-import { UserContext, VacanciesContext } from "../utils/context";
+import {
+  UserContext,
+  VacanciesContext,
+  SelectedVacanciesContext,
+} from "../utils/context";
 import styles from "./page.module.css";
 import { useNavigate } from "react-router-dom";
 import { defaultMessage } from "../utils/constants";
@@ -16,11 +20,17 @@ const LoginPage = () => {
   const token = cookies.authorization;
   const [resumes, setResumes] = useState();
   const [vacancies, setVacancies] = useContext(VacanciesContext);
+  const [selectedVacancies, setSelectedVacancies] = useContext(
+    SelectedVacanciesContext
+  );
   const [userCtx, setUserCtx] = useContext(UserContext);
   const [message, setMessage] = useState(defaultMessage);
+  const pages = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  ];
 
-  const loadVacancies = (resumeId) => {
-    getUserVacancies(token, resumeId).then((res) => {
+  const loadVacancies = (resumeId, page) => {
+    getUserVacancies(token, resumeId, page).then((res) => {
       setVacancies(res);
     });
   };
@@ -31,7 +41,7 @@ const LoginPage = () => {
       const items = res.items;
       items[0] = { ...items[0], checked: true };
       setResumes(items);
-      loadVacancies(items[0].id);
+      loadVacancies(items[0].id, 0);
     });
   }, []);
 
@@ -44,7 +54,7 @@ const LoginPage = () => {
         return { ...item, checked: false };
       }
       if (!item.checked && item.id === e.target.id) {
-        loadVacancies(item.id);
+        loadVacancies(item.id, 0);
         return { ...item, checked: true };
       }
     });
@@ -52,8 +62,8 @@ const LoginPage = () => {
   };
 
   const sendMessagetoAllVacancies = () => {
-    vacancies.map((item) => {
-      if (item.checked) {
+    selectedVacancies.map((item) => {
+      if (item.has_test === false) {
         const formData = new FormData();
         formData.append("resume_id", resumes[0].id);
         formData.append("vacancy_id", item.id);
@@ -66,7 +76,7 @@ const LoginPage = () => {
         }
       }
     });
-    loadVacancies(resumes[0].id);
+    loadVacancies(resumes[0].id, 0);
   };
 
   const logout = async () => {
@@ -103,7 +113,14 @@ const LoginPage = () => {
           <h3 className={styles.loginTitle}>
             Подходящие вакансии к выбранному резюме:
           </h3>
-          <DatatableVacancies />         
+          <DatatableVacancies />
+          <div className={styles.pagination}>
+            {pages.map((page) => (
+              <button key={page} className={styles.pagination__btn} onClick={() => loadVacancies(resumes[0].id, page)}>
+                {page}
+              </button>
+            ))}
+          </div>
           <h3 className={styles.loginTitle}>Сопроводительное письмо:</h3>
           <InputTextarea
             className={styles.loginTextarea}
@@ -122,7 +139,7 @@ const LoginPage = () => {
             </Button>
             <Button
               className="p-button-secondary p-component"
-              onClick={() => loadVacancies(resumes[0].id)}
+              onClick={() => loadVacancies(resumes[0].id, 0)}
             >
               <span className="p-button-icon p-c p-button-icon-left pi pi-refresh"></span>
               <span className="p-button-label p-c">

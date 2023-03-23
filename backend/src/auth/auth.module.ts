@@ -7,10 +7,12 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { ConfigService } from '@nestjs/config';
 import { HHOauthStrategy } from './strategies/hh.strategy';
 import { AuthController } from './auth.controller';
+import { ApiModule } from 'src/api/api.module';
 
 @Module({
   imports: [
     UsersModule,
+    ApiModule,
     PassportModule,
     JwtModule.registerAsync({
       useFactory: async () => {

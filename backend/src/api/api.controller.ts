@@ -33,11 +33,13 @@ export class ApiController {
   async getVacanciesSimilarToResume(
     @Req() req: any,
     @Param('resumes_id') resumes_id: string,
+    @Param('page') page: string,
   ) {
     const accessToken = req.user.accessToken;
     const vacancies = await this.apiService.getVacanciesSimilarToResume(
       accessToken,
       resumes_id,
+      page,
     );
     return vacancies;
   }
