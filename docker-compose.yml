@@ -35,3 +35,6 @@ services:
 networks:
   back:
     driver: bridge
+    
+volumes:
+  mongodb_data_container:
