@@ -44,7 +44,7 @@ export class ApiService {
     const config = { Authorization: bearerToken };
     return this.httpService
       .get(
-        `https://api.hh.ru/resumes/${resumes_id}/similar_vacancies?per_page=${page}&page=199`,
+        `https://api.hh.ru/resumes/${resumes_id}/similar_vacancies?per_page=100&page=${page}`,
         { headers: config },
       )
       .pipe(
