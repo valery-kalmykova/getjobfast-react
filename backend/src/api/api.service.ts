@@ -1,13 +1,13 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { map, catchError, firstValueFrom } from 'rxjs';
-import { User } from 'src/users/schemas/user.schema';
+// import { User } from 'src/users/schemas/user.schema';
 
 @Injectable()
 export class ApiService {
   constructor(private httpService: HttpService) {}
 
-  async getUser(token: string): Promise<User> {
+  async getUser(token: string) {
     const bearerToken = `Bearer ${token}`;
     const config = { Authorization: bearerToken };
     return firstValueFrom(
