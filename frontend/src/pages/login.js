@@ -28,8 +28,8 @@ const LoginPage = () => {
 
   const loadVacancies = (resumeId) => {
     let counter = 0;
-    do {
-      let i = 0;
+    let i = 0;
+    do {      
       getUserVacancies(token, resumeId, i)
       .then((res) => {
         const filteredList = res.filter((item) => item.has_test === false && !item.relations.includes("got_response"));
@@ -42,10 +42,10 @@ const LoginPage = () => {
         }
         counter = counter + filteredList.length;
         setVacancies(filteredList);
-        i++;      
+        i++;
       })
     }
-    while (counter >= 200 )
+    while (i >=20 )
   };
 
   useEffect(() => {
