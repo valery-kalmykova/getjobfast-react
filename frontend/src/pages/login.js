@@ -25,14 +25,27 @@ const LoginPage = () => {
   );
   const [userCtx, setUserCtx] = useContext(UserContext);
   const [message, setMessage] = useState(defaultMessage);
-  const pages = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-  ];
 
-  const loadVacancies = (resumeId, page) => {
-    getUserVacancies(token, resumeId, page).then((res) => {
-      setVacancies(res);
-    });
+  const loadVacancies = (resumeId) => {
+    let counter = 0;
+    do {
+      let i = 0;
+      getUserVacancies(token, resumeId, i)
+      .then((res) => {
+        const filteredList = res.filter((item) => item.has_test === false && !item.relations.includes("got_response"));
+        if ((counter + filteredList.length) > 200) {
+          const raznica = 200 - counter;
+          const slice = filteredList.slice(0, raznica);
+          counter = 200;
+          setVacancies(slice);
+          return;
+        }
+        counter = counter + filteredList.length;
+        setVacancies(filteredList);
+        i++;      
+      })
+    }
+    while (counter >= 200 )
   };
 
   useEffect(() => {
@@ -41,25 +54,9 @@ const LoginPage = () => {
       const items = res.items;
       items[0] = { ...items[0], checked: true };
       setResumes(items);
-      loadVacancies(items[0].id, 0);
+      loadVacancies(items[0].id);
     });
   }, []);
-
-  const checkResume = (e) => {
-    const newItems = resumes.map((item) => {
-      if (item.checked && item.id === e.target.id) {
-        return item;
-      }
-      if (item.checked && item.id !== e.target.id) {
-        return { ...item, checked: false };
-      }
-      if (!item.checked && item.id === e.target.id) {
-        loadVacancies(item.id, 0);
-        return { ...item, checked: true };
-      }
-    });
-    setResumes(newItems);
-  };
 
   const sendMessagetoAllVacancies = () => {
     selectedVacancies.map((item) => {
@@ -76,7 +73,7 @@ const LoginPage = () => {
         }
       }
     });
-    loadVacancies(resumes[0].id, 0);
+    loadVacancies(resumes[0].id);
   };
 
   const logout = async () => {
@@ -108,19 +105,12 @@ const LoginPage = () => {
           </div>
           <h3 className={styles.loginTitle}>Мои резюме:</h3>
           <ul className={styles.loginListResumes}>
-            <Resumes resumes={resumes} onClick={(e) => checkResume(e)} />
+            <Resumes resumes={resumes} />
           </ul>
           <h3 className={styles.loginTitle}>
             Подходящие вакансии к выбранному резюме:
           </h3>
           <DatatableVacancies />
-          <div className={styles.pagination}>
-            {pages.map((page) => (
-              <button key={page} className={styles.pagination__btn} onClick={() => loadVacancies(resumes[0].id, page)}>
-                {page}
-              </button>
-            ))}
-          </div>
           <h3 className={styles.loginTitle}>Сопроводительное письмо:</h3>
           <InputTextarea
             className={styles.loginTextarea}
@@ -139,7 +129,7 @@ const LoginPage = () => {
             </Button>
             <Button
               className="p-button-secondary p-component"
-              onClick={() => loadVacancies(resumes[0].id, 0)}
+              onClick={() => loadVacancies(resumes[0].id)}
             >
               <span className="p-button-icon p-c p-button-icon-left pi pi-refresh"></span>
               <span className="p-button-label p-c">
