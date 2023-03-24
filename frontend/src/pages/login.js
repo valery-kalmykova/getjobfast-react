@@ -26,28 +26,39 @@ const LoginPage = () => {
   const [userCtx, setUserCtx] = useContext(UserContext);
   const [message, setMessage] = useState(defaultMessage);
 
-  const loadVacancies = (resumeId) => {
-    let i = 0;
-    while (i < 20) {
-      if (i === 0) {
-        getUserVacancies(token, resumeId, i).then((res) => {
-          const filteredList = res.filter(
-            (item) =>
-              item.has_test === false &&
-              !item.relations.includes("got_response")
-          );
-          setVacancies(filteredList);
-        });
-      }
-      getUserVacancies(token, resumeId, i).then((res) => {
-        const filteredList = res.filter(
-          (item) =>
-            item.has_test === false && !item.relations.includes("got_response")
-        );
-        setVacancies([...vacancies, ...res]);
-      });
-      i++;
-    }
+  // const loadVacancies = (resumeId) => {
+  //   let i = 0;
+  //   while (i < 20) {
+  //     if (i === 0) {
+  //       getUserVacancies(token, resumeId, i).then((res) => {
+  //         const filteredList = res.filter(
+  //           (item) =>
+  //             item.has_test === false &&
+  //             !item.relations.includes("got_response")
+  //         );
+  //         setVacancies(filteredList);
+  //       });
+  //     }
+  //     getUserVacancies(token, resumeId, i).then((res) => {
+  //       const filteredList = res.filter(
+  //         (item) =>
+  //           item.has_test === false && !item.relations.includes("got_response")
+  //       );
+  //       setVacancies([...vacancies, ...res]);
+  //     });
+  //     i++;
+  //   }
+  // };
+
+  const loadVacancies = async (resumeId) => {
+    const page_1 = await getUserVacancies(token, resumeId, 0);
+    const filteredList = page_1.filter(
+      (item) =>
+        item.has_test === false && !item.relations.includes("got_response")
+    );
+    setVacancies(filteredList);
+    const page_2 = await getUserVacancies(token, resumeId, 1);
+    setVacancies([...vacancies, ...page_2]);
   };
 
   useEffect(() => {
