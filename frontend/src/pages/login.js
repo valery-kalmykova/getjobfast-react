@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback, useMemo } from "react";
 import { useCookies } from "react-cookie";
 import { getUserResumes, getUserVacancies, sendMessage } from "../utils/api";
 import { Resumes } from "../components/Resumes/Resumes";
 import {
   UserContext,
-  VacanciesContext,
   SelectedVacanciesContext,
 } from "../utils/context";
 import styles from "./page.module.css";
@@ -19,39 +18,56 @@ const LoginPage = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["authorization"]);
   const token = cookies.authorization;
   const [resumes, setResumes] = useState();
-  const [vacancies, setVacancies] = useContext(VacanciesContext);
+  const [vacancies, setVacancies] = useState([]);
   const [selectedVacancies, setSelectedVacancies] = useContext(
     SelectedVacanciesContext
   );
   const [userCtx, setUserCtx] = useContext(UserContext);
   const [message, setMessage] = useState(defaultMessage);
-  const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+
   const filteresList = (data) => {
-    data.filter(
+    return data.filter(
       (item) =>
         item.has_test === false && !item.relations.includes("got_response")
     );
-  }
-
-  const loadVacancies = async (resumeId) => {
-    const page_0 = await getUserVacancies(token, resumeId, 0);
-    const pageData = filteresList(page_0);
-    setVacancies(pageData);
-    pages.map(async(page) => {
-      const data = await getUserVacancies(token, resumeId, page);
-      const pageData = filteresList(data);
-      setVacancies([...vacancies, ...pageData]);
-    });
   };
 
-  useEffect(() => {
-    sessionStorage.setItem("auth_token", token);
+  const loadVacancies = (resumeId, page) => {
+    getUserVacancies(token, resumeId, page).then((res) => {
+      setVacancies((vacancies) => [...vacancies, ...filteresList(res)]);
+    });
+  };
+  
+ useMemo(() => {
     getUserResumes(token).then((res) => {
       const items = res.items;
       items[0] = { ...items[0], checked: true };
       setResumes(items);
-      loadVacancies(items[0].id);
+      loadVacancies(items[0].id, 0);
+      loadVacancies(items[0].id, 1);
+      loadVacancies(items[0].id, 2);
+      loadVacancies(items[0].id, 3);
+      loadVacancies(items[0].id, 4);
+      loadVacancies(items[0].id, 5);
+      loadVacancies(items[0].id, 6);
+      loadVacancies(items[0].id, 7);
+      loadVacancies(items[0].id, 8);
+      loadVacancies(items[0].id, 9);
+      loadVacancies(items[0].id, 10);
+      loadVacancies(items[0].id, 11);
+      loadVacancies(items[0].id, 12);
+      loadVacancies(items[0].id, 13);
+      loadVacancies(items[0].id, 14);
+      loadVacancies(items[0].id, 15);
+      loadVacancies(items[0].id, 16);
+      loadVacancies(items[0].id, 17);
+      loadVacancies(items[0].id, 18);
+      loadVacancies(items[0].id, 19);
     });
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("auth_token", token);
   }, []);
 
   const sendMessagetoAllVacancies = () => {
@@ -105,7 +121,7 @@ const LoginPage = () => {
           <h3 className={styles.loginTitle}>
             Подходящие вакансии к выбранному резюме:
           </h3>
-          <DatatableVacancies />
+          <DatatableVacancies vacancies={vacancies} />      
           <h3 className={styles.loginTitle}>Сопроводительное письмо:</h3>
           <InputTextarea
             className={styles.loginTextarea}
