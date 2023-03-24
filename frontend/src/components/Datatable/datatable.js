@@ -4,17 +4,18 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { FilterMatchMode, FilterOperator } from "primereact/api";
-import { VacanciesContext, SelectedVacanciesContext } from '../../utils/context';
+import { SelectedVacanciesContext } from "../../utils/context";
 
-export const DatatableVacancies = () => {
-  const [vacancies, setVacancies] = useContext(VacanciesContext);
-  const [selectedVacancies, setSelectedVacancies] = useContext(SelectedVacanciesContext);
+export const DatatableVacancies = ({ vacancies }) => {
+  const [selectedVacancies, setSelectedVacancies] = useContext(
+    SelectedVacanciesContext
+  );
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
   const [expandedRows, setExpandedRows] = useState(null);
-  
+
   const renderHeader = () => {
     return (
       <div className={styles.headerFlex}>
@@ -41,18 +42,21 @@ export const DatatableVacancies = () => {
 
   const header = renderHeader();
 
-  const salaryBodyTemplate = (rowData) => {    
-    if (rowData.salary !== null && rowData.salary.from !== null) {      
+  const salaryBodyTemplate = (rowData) => {
+    if (rowData.salary !== null && rowData.salary.from !== null) {
       return (
         <React.Fragment>
           <span>{rowData.salary.from.toLocaleString()}</span>
-          <span>&nbsp;{rowData.salary.currency !== 'RUR' ? rowData.salary.currency : ''}</span>
-        </React.Fragment>        
-      )
+          <span>
+            &nbsp;
+            {rowData.salary.currency !== "RUR" ? rowData.salary.currency : ""}
+          </span>
+        </React.Fragment>
+      );
     } else {
-      return '-';
-    };
-  }
+      return "-";
+    }
+  };
 
   const rowExpansionTemplate = (rowData) => {
     return (
@@ -63,25 +67,34 @@ export const DatatableVacancies = () => {
         <p>{rowData.snippet.requirement}</p>
         <h4>График работы:</h4>
         <p>{rowData.schedule.name}</p>
-        { rowData.has_test &&
-        <>
-          <h4>Пройти тест на hh.ru:</h4>
-          <a href={rowData.apply_alternate_url} target="_blank" rel="noreferrer">{rowData.apply_alternate_url}</a> 
-        </> }
+        {rowData.has_test && (
+          <>
+            <h4>Пройти тест на hh.ru:</h4>
+            <a
+              href={rowData.apply_alternate_url}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {rowData.apply_alternate_url}
+            </a>
+          </>
+        )}
       </div>
     );
-  }
+  };
 
   const allowExpansion = (rowData) => {
     return rowData.name.length > 0;
   };
+
+  if(!vacancies) return null;
 
   return (
     <DataTable
       value={vacancies}
       paginator
       rows={100}
-      rowsPerPageOptions={[100, 200]}
+      rowsPerPageOptions={[10, 20]}
       header={header}
       filters={filters}
       expandedRows={expandedRows}
@@ -90,7 +103,7 @@ export const DatatableVacancies = () => {
       dataKey="id"
       selectionMode="checkbox"
       selection={selectedVacancies}
-      onSelectionChange={e => setSelectedVacancies(e.value)}
+      onSelectionChange={(e) => setSelectedVacancies(e.value)}
     >
       <Column
         selectionMode="multiple"
@@ -99,8 +112,14 @@ export const DatatableVacancies = () => {
       ></Column>
       <Column field="name" header="Вакансия" sortable></Column>
       <Column field="employer.name" header="Работодатель" sortable></Column>
-      <Column field="salary.from" header="Зарплата от" dataType="numeric" body={salaryBodyTemplate} sortable></Column>
-      <Column expander={allowExpansion} style={{ width: '3em' }} />
+      <Column
+        field="salary.from"
+        header="Зарплата от"
+        dataType="numeric"
+        body={salaryBodyTemplate}
+        sortable
+      ></Column>
+      <Column expander={allowExpansion} style={{ width: "3em" }} />
     </DataTable>
   );
 };

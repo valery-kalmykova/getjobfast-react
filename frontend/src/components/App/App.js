@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "../../pages/home";
 import LoginPage from "../../pages/login";
-import { UserContext, VacanciesContext, SelectedVacanciesContext } from "../../utils/context";
+import { UserContext, SelectedVacanciesContext } from "../../utils/context";
 import { getOwnUser } from "../../utils/api";
 import { PrivateRoute } from "../PrivateRoute";
 
@@ -15,7 +15,7 @@ import "primeicons/primeicons.css";
 function App() {
   const [cookies] = useCookies();
   const [userCtx, setUserCtx] = useState(null);
-  const [vacancies, setVacancies] = useState(null);
+
   const [selectedVacancies, setSelectedVacancies] = useState(null);
 
   useEffect(() => {
@@ -32,11 +32,11 @@ function App() {
 
   return (
     <UserContext.Provider value={[userCtx, setUserCtx]}>
-      <VacanciesContext.Provider value={[vacancies, setVacancies]}>
-        <SelectedVacanciesContext.Provider value={[selectedVacancies, setSelectedVacancies]}>
-          <ApplicationView />
-        </SelectedVacanciesContext.Provider>
-      </VacanciesContext.Provider>
+      <SelectedVacanciesContext.Provider
+        value={[selectedVacancies, setSelectedVacancies]}
+      >
+        <ApplicationView />
+      </SelectedVacanciesContext.Provider>
     </UserContext.Provider>
   );
 }
@@ -54,9 +54,9 @@ const ApplicationView = () => {
         <Route exact path="/start" element={<HomePage />} />
         {/* <Route path="/" element={<LoginPage />}/>
         <Route path="/login" element={<LoginPage />}/> */}
-        <Route path="/" element={<PrivateRoute/>}>
-          <Route path="/" element={<LoginPage />}/>
-          <Route path="/login" element={<LoginPage />}/>
+        <Route path="/" element={<PrivateRoute />}>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Route>
       </Routes>
     </Router>
