@@ -1,12 +1,11 @@
 .cardChecked {
   border: 2px solid  var(--green-500);
-  cursor: pointer; 
 }
 
-.card {
+/* .card {
   cursor: pointer;
 }
 
 .card:hover {
   border: 2px solid  var(--green-500);
-}
+} */

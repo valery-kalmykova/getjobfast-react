@@ -1,4 +1,5 @@
 const URL = `http://${process.env.REACT_APP_HOST}:4000`;
+// const URL = `http://localhost:4000`;
 const checkResponse = (res) => {
   if (res.ok || res.created) {
     return res.json();
