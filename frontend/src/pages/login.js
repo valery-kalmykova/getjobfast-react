@@ -25,40 +25,23 @@ const LoginPage = () => {
   );
   const [userCtx, setUserCtx] = useContext(UserContext);
   const [message, setMessage] = useState(defaultMessage);
-
-  // const loadVacancies = (resumeId) => {
-  //   let i = 0;
-  //   while (i < 20) {
-  //     if (i === 0) {
-  //       getUserVacancies(token, resumeId, i).then((res) => {
-  //         const filteredList = res.filter(
-  //           (item) =>
-  //             item.has_test === false &&
-  //             !item.relations.includes("got_response")
-  //         );
-  //         setVacancies(filteredList);
-  //       });
-  //     }
-  //     getUserVacancies(token, resumeId, i).then((res) => {
-  //       const filteredList = res.filter(
-  //         (item) =>
-  //           item.has_test === false && !item.relations.includes("got_response")
-  //       );
-  //       setVacancies([...vacancies, ...res]);
-  //     });
-  //     i++;
-  //   }
-  // };
-
-  const loadVacancies = async (resumeId) => {
-    const page_1 = await getUserVacancies(token, resumeId, 0);
-    const filteredList = page_1.filter(
+  const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+  const filteresList = (data) => {
+    data.filter(
       (item) =>
         item.has_test === false && !item.relations.includes("got_response")
     );
-    setVacancies(filteredList);
-    const page_2 = await getUserVacancies(token, resumeId, 1);
-    setVacancies([...vacancies, ...page_2]);
+  }
+
+  const loadVacancies = async (resumeId) => {
+    const page_0 = await getUserVacancies(token, resumeId, 0);
+    const pageData = filteresList(page_0);
+    setVacancies(pageData);
+    pages.map(async(page) => {
+      const data = await getUserVacancies(token, resumeId, page);
+      const pageData = filteresList(data);
+      setVacancies([...vacancies, ...pageData]);
+    });
   };
 
   useEffect(() => {
