@@ -27,25 +27,27 @@ const LoginPage = () => {
   const [message, setMessage] = useState(defaultMessage);
 
   const loadVacancies = (resumeId) => {
-    let counter = 0;
     let i = 0;
-    do {      
-      getUserVacancies(token, resumeId, i)
-      .then((res) => {
-        const filteredList = res.filter((item) => item.has_test === false && !item.relations.includes("got_response"));
-        if ((counter + filteredList.length) > 200) {
-          const raznica = 200 - counter;
-          const slice = filteredList.slice(0, raznica);
-          counter = 200;
-          setVacancies(slice);
-          return;
-        }
-        counter = counter + filteredList.length;
-        setVacancies(filteredList);
-        i++;
-      })
+    while (i < 20) {
+      if (i === 0) {
+        getUserVacancies(token, resumeId, i).then((res) => {
+          const filteredList = res.filter(
+            (item) =>
+              item.has_test === false &&
+              !item.relations.includes("got_response")
+          );
+          setVacancies(filteredList);
+        });
+      }
+      getUserVacancies(token, resumeId, i).then((res) => {
+        const filteredList = res.filter(
+          (item) =>
+            item.has_test === false && !item.relations.includes("got_response")
+        );
+        setVacancies([...vacancies, ...res]);
+      });
+      i++;
     }
-    while (i >=20 )
   };
 
   useEffect(() => {
@@ -60,17 +62,16 @@ const LoginPage = () => {
 
   const sendMessagetoAllVacancies = () => {
     selectedVacancies.map((item) => {
-      if (item.has_test === false) {
-        const formData = new FormData();
-        formData.append("resume_id", resumes[0].id);
-        formData.append("vacancy_id", item.id);
-        formData.append("message", message);
-        console.log(message);
-        try {
-          sendMessage(token, formData);
-        } catch (err) {
-          console.log(err);
-        }
+      const formData = new FormData();
+      formData.append("resume_id", resumes[0].id);
+      formData.append("vacancy_id", item.id);
+      formData.append("message", message);
+      console.log(message);
+      try {
+        sendMessage(token, formData);
+      } catch (err) {
+        console.log(err);
+        return;
       }
     });
     loadVacancies(resumes[0].id);
