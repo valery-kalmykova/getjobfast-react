@@ -51,9 +51,9 @@ const ApplicationView = () => {
   return (
     <Router>
       <Routes>
-        {/* <Route exact path="/start" element={<HomePage />} />
-        <Route path="/" element={<LoginPage />}/> */}
-        <Route path="/login" element={<LoginPage />}/>
+        <Route exact path="/start" element={<HomePage />} />
+        {/* <Route path="/" element={<LoginPage />}/>
+        <Route path="/login" element={<LoginPage />}/> */}
         <Route path="/" element={<PrivateRoute />}>
           <Route path="/" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
