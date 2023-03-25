@@ -94,7 +94,7 @@ export const DatatableVacancies = ({ vacancies }) => {
       value={vacancies}
       paginator
       rows={100}
-      rowsPerPageOptions={[10, 20]}
+      rowsPerPageOptions={[100, 200]}
       header={header}
       filters={filters}
       expandedRows={expandedRows}
@@ -102,6 +102,7 @@ export const DatatableVacancies = ({ vacancies }) => {
       rowExpansionTemplate={rowExpansionTemplate}
       dataKey="id"
       selectionMode="checkbox"
+      selectionPageOnly
       selection={selectedVacancies}
       onSelectionChange={(e) => setSelectedVacancies(e.value)}
     >
