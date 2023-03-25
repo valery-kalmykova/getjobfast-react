@@ -62,11 +62,11 @@ export const DatatableVacancies = ({ vacancies }) => {
     return (
       <div className={styles.expandContainer}>
         <h4>Обязанности:</h4>
-        <p>{rowData.snippet.responsibility}</p>
+        <p>{rowData.snippet.responsibility && rowData.snippet.responsibility}</p>
         <h4>Требования:</h4>
-        <p>{rowData.snippet.requirement}</p>
+        <p>{rowData.snippet.requirement && rowData.snippet.requirement}</p>
         <h4>График работы:</h4>
-        <p>{rowData.schedule.name}</p>
+        <p>{rowData.schedule.name && rowData.schedule.name}</p>
         {rowData.has_test && (
           <>
             <h4>Пройти тест на hh.ru:</h4>

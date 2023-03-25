@@ -1,17 +1,20 @@
-import React, { useEffect, useState, useContext, useCallback, useMemo } from "react";
+import React, {
+  useEffect,
+  useState,
+  useContext,
+  useCallback,
+  useMemo,
+} from "react";
 import { useCookies } from "react-cookie";
 import { getUserResumes, getUserVacancies, sendMessage } from "../utils/api";
 import { Resumes } from "../components/Resumes/Resumes";
-import {
-  UserContext,
-  SelectedVacanciesContext,
-} from "../utils/context";
+import { UserContext, SelectedVacanciesContext } from "../utils/context";
 import styles from "./page.module.css";
 import { useNavigate } from "react-router-dom";
 import { defaultMessage } from "../utils/constants";
 import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
-import { Dialog } from 'primereact/dialog';
+import { Dialog } from "primereact/dialog";
 import { DatatableVacancies } from "../components/Datatable/datatable";
 import { ProgressBarDefault } from "../components/ProgressBar/ProgressBar";
 
@@ -24,6 +27,7 @@ const LoginPage = () => {
   const [selectedVacancies, setSelectedVacancies] = useContext(
     SelectedVacanciesContext
   );
+  console.log(selectedVacancies);
   const [userCtx, setUserCtx] = useContext(UserContext);
   const [message, setMessage] = useState(defaultMessage);
   const [showDialog, setShowDialog] = useState(false);
@@ -31,7 +35,6 @@ const LoginPage = () => {
   const [counter, setCounter] = useState(0);
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
-
 
   const filteresList = (data) => {
     return data.filter(
@@ -52,7 +55,7 @@ const LoginPage = () => {
       items[0] = { ...items[0], checked: true };
       setResumes(items);
       let i = 0;
-      while(i < 20) {
+      while (i < 20) {
         loadVacancies(items[0].id, i);
         i++;
       }
@@ -68,21 +71,20 @@ const LoginPage = () => {
   }, []);
 
   const sendMessagetoVacancies = (array) => {
-    setShowDialog(true)
+    setShowDialog(true);
     array.map((item) => {
       const formData = new FormData();
       formData.append("resume_id", resumes[0].id);
       formData.append("vacancy_id", item.id);
       formData.append("message", message);
-      try {
-        sendMessage(token, formData);
-        setCounter((counter) => counter + 1);
-      } catch (err) {
-        console.log(err);
-        setError(true);
-        setErrorText("Лимит исчерпан, Вы отправили 200 откликов за день. До завтра!");
-        return;
-      }
+      sendMessage(token, formData)
+        .then(() => setCounter((counter) => counter + 1))
+        .catch(() => {
+          setError(true);
+          setErrorText(
+            "Лимит исчерпан, Вы отправили 200 откликов за день. До завтра!"
+          );
+        });
     });
   };
 
@@ -94,18 +96,20 @@ const LoginPage = () => {
     } else {
       setTotalToSend(vacancies.length);
       setError(true);
-      setErrorText(`Было доступно ${vacancies.length} вакансий для отклика`)
+      setErrorText(`Было доступно ${vacancies.length} вакансий для отклика`);
       sendMessagetoVacancies(vacancies);
     }
-  }
+  };
 
-  const sendMessagetoSelectedVacancies = () => {    
+  const sendMessagetoSelectedVacancies = () => {
     console.log(selectedVacancies.length);
     setTotalToSend(selectedVacancies.length);
     sendMessagetoVacancies(selectedVacancies);
     setError(true);
-    setErrorText(`Было отмечено ${selectedVacancies.length} вакансии(-ий, -ия)`)
-  }
+    setErrorText(
+      `Было отмечено ${selectedVacancies.length} вакансии(-ий, -ия)`
+    );
+  };
 
   const closeDialog = () => {
     setShowDialog(false);
@@ -113,8 +117,9 @@ const LoginPage = () => {
     setCounter(0);
     setTotalToSend(0);
     setError(false);
+    setSelectedVacancies([]);
     loadData();
-  }
+  };
 
   const logout = async () => {
     removeCookie("authorization");
@@ -161,23 +166,31 @@ const LoginPage = () => {
               onClick={sendMessageto200Vacancies}
             >
               <span className="p-button-icon p-c p-button-icon-left pi pi-send"></span>
-              <span className="p-button-label p-c">Разослать отклики на 200 вакансий</span>
+              <span className="p-button-label p-c">
+                Разослать отклики на 200 вакансий
+              </span>
             </Button>
             <Button
               className="p-button p-component"
               onClick={sendMessagetoSelectedVacancies}
             >
               <span className="p-button-icon p-c p-button-icon-left pi pi-send"></span>
-              <span className="p-button-label p-c">Разослать отклики отмеченные вакансии</span>
+              <span className="p-button-label p-c">
+                Разослать отклики отмеченные вакансии
+              </span>
             </Button>
           </div>
           <h3 className={styles.loginTitle}>
             Подходящие вакансии к выбранному резюме:
           </h3>
-          <DatatableVacancies vacancies={vacancies} /> 
+          <DatatableVacancies vacancies={vacancies} />
         </div>
       </div>
-      <Dialog visible={showDialog} onHide={() => closeDialog()} style={{width: "90%"}}>
+      <Dialog
+        visible={showDialog}
+        onHide={() => closeDialog()}
+        style={{ width: "90%" }}
+      >
         <ProgressBarDefault current={counter} total={totalToSend} />
         <div className={styles.errorText}>{error && errorText}</div>
       </Dialog>
