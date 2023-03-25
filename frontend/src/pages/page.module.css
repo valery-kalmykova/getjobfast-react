@@ -132,9 +132,7 @@
 
 .loginListResumes {
   padding: 0; 
-  padding-bottom: 20px; 
   margin: 0;
-  margin-bottom: 20px;
   display: flex;
   gap: 5px;  
   flex-wrap: wrap;
@@ -189,4 +187,10 @@
 
 .pagination__btn {
   cursor: pointer;
+}
+
+.errorText {
+  margin: 20px auto 0;
+  text-align: center;
+  color: #D32F2F;
 }

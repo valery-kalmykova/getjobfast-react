@@ -11,7 +11,9 @@ import { useNavigate } from "react-router-dom";
 import { defaultMessage } from "../utils/constants";
 import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
+import { Dialog } from 'primereact/dialog';
 import { DatatableVacancies } from "../components/Datatable/datatable";
+import { ProgressBarDefault } from "../components/ProgressBar/ProgressBar";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -24,6 +26,12 @@ const LoginPage = () => {
   );
   const [userCtx, setUserCtx] = useContext(UserContext);
   const [message, setMessage] = useState(defaultMessage);
+  const [showDialog, setShowDialog] = useState(false);
+  const [totalToSend, setTotalToSend] = useState(0);
+  const [counter, setCounter] = useState(0);
+  const [error, setError] = useState(false);
+  const [errorText, setErrorText] = useState("");
+
 
   const filteresList = (data) => {
     return data.filter(
@@ -37,55 +45,76 @@ const LoginPage = () => {
       setVacancies((vacancies) => [...vacancies, ...filteresList(res)]);
     });
   };
-  
- useMemo(() => {
+
+  const loadData = () => {
     getUserResumes(token).then((res) => {
       const items = res.items;
       items[0] = { ...items[0], checked: true };
       setResumes(items);
-      loadVacancies(items[0].id, 0);
-      loadVacancies(items[0].id, 1);
-      loadVacancies(items[0].id, 2);
-      loadVacancies(items[0].id, 3);
-      loadVacancies(items[0].id, 4);
-      loadVacancies(items[0].id, 5);
-      loadVacancies(items[0].id, 6);
-      loadVacancies(items[0].id, 7);
-      loadVacancies(items[0].id, 8);
-      loadVacancies(items[0].id, 9);
-      loadVacancies(items[0].id, 10);
-      loadVacancies(items[0].id, 11);
-      loadVacancies(items[0].id, 12);
-      loadVacancies(items[0].id, 13);
-      loadVacancies(items[0].id, 14);
-      loadVacancies(items[0].id, 15);
-      loadVacancies(items[0].id, 16);
-      loadVacancies(items[0].id, 17);
-      loadVacancies(items[0].id, 18);
-      loadVacancies(items[0].id, 19);
+      let i = 0;
+      while(i < 20) {
+        loadVacancies(items[0].id, i);
+        i++;
+      }
     });
-  }, []);
+  };
 
   useEffect(() => {
     sessionStorage.setItem("auth_token", token);
   }, []);
 
-  const sendMessagetoAllVacancies = () => {
-    selectedVacancies.map((item) => {
+  useMemo(() => {
+    loadData();
+  }, []);
+
+  const sendMessagetoVacancies = (array) => {
+    setShowDialog(true)
+    array.map((item) => {
       const formData = new FormData();
       formData.append("resume_id", resumes[0].id);
       formData.append("vacancy_id", item.id);
       formData.append("message", message);
-      console.log(message);
       try {
         sendMessage(token, formData);
+        setCounter((counter) => counter + 1);
       } catch (err) {
         console.log(err);
+        setError(true);
+        setErrorText("Лимит исчерпан, Вы отправили 200 откликов за день. До завтра!");
         return;
       }
     });
-    loadVacancies(resumes[0].id);
   };
+
+  const sendMessageto200Vacancies = () => {
+    if (vacancies.length >= 200) {
+      setTotalToSend(200);
+      const vacancies200Array = vacancies.slice(0, 199);
+      sendMessagetoVacancies(vacancies200Array);
+    } else {
+      setTotalToSend(vacancies.length);
+      setError(true);
+      setErrorText(`Было доступно ${vacancies.length} вакансий для отклика`)
+      sendMessagetoVacancies(vacancies);
+    }
+  }
+
+  const sendMessagetoSelectedVacancies = () => {    
+    console.log(selectedVacancies.length);
+    setTotalToSend(selectedVacancies.length);
+    sendMessagetoVacancies(selectedVacancies);
+    setError(true);
+    setErrorText(`Было отмечено ${selectedVacancies.length} вакансии(-ий, -ия)`)
+  }
+
+  const closeDialog = () => {
+    setShowDialog(false);
+    setVacancies([]);
+    setCounter(0);
+    setTotalToSend(0);
+    setError(false);
+    loadData();
+  }
 
   const logout = async () => {
     removeCookie("authorization");
@@ -118,10 +147,6 @@ const LoginPage = () => {
           <ul className={styles.loginListResumes}>
             <Resumes resumes={resumes} />
           </ul>
-          <h3 className={styles.loginTitle}>
-            Подходящие вакансии к выбранному резюме:
-          </h3>
-          <DatatableVacancies vacancies={vacancies} />      
           <h3 className={styles.loginTitle}>Сопроводительное письмо:</h3>
           <InputTextarea
             className={styles.loginTextarea}
@@ -133,23 +158,29 @@ const LoginPage = () => {
           <div className={styles.loginBtns}>
             <Button
               className="p-button p-component"
-              onClick={sendMessagetoAllVacancies}
+              onClick={sendMessageto200Vacancies}
             >
               <span className="p-button-icon p-c p-button-icon-left pi pi-send"></span>
-              <span className="p-button-label p-c">Разослать отклики</span>
+              <span className="p-button-label p-c">Разослать отклики на 200 вакансий</span>
             </Button>
             <Button
-              className="p-button-secondary p-component"
-              onClick={() => loadVacancies(resumes[0].id)}
+              className="p-button p-component"
+              onClick={sendMessagetoSelectedVacancies}
             >
-              <span className="p-button-icon p-c p-button-icon-left pi pi-refresh"></span>
-              <span className="p-button-label p-c">
-                Обновить список вакансий
-              </span>
+              <span className="p-button-icon p-c p-button-icon-left pi pi-send"></span>
+              <span className="p-button-label p-c">Разослать отклики отмеченные вакансии</span>
             </Button>
           </div>
+          <h3 className={styles.loginTitle}>
+            Подходящие вакансии к выбранному резюме:
+          </h3>
+          <DatatableVacancies vacancies={vacancies} /> 
         </div>
       </div>
+      <Dialog visible={showDialog} onHide={() => closeDialog()} style={{width: "90%"}}>
+        <ProgressBarDefault current={counter} total={totalToSend} />
+        <div className={styles.errorText}>{error && errorText}</div>
+      </Dialog>
     </div>
   );
 };
