@@ -89,17 +89,16 @@ const LoginPage = () => {
 
   const sendMessageto200Vacancies = () => {
     const sortArr = vacancies.sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
-    console.log(sortArr.slice(0, 199));
-    // if (sortArr.length >= 200) {
-    //   setTotalToSend(200);
-    //   const vacancies200Array = sortArr.slice(0, 199);
-    //   sendMessagetoVacancies(vacancies200Array);
-    // } else {
-    //   setTotalToSend(sortArr.length);
-    //   setError(true);
-    //   setErrorText(`Было доступно ${sortArr.length} вакансий для отклика`);
-    //   sendMessagetoVacancies(sortArr);
-    // }
+    if (sortArr.length >= 200) {
+      setTotalToSend(200);
+      const vacancies200Array = sortArr.slice(0, 199);
+      sendMessagetoVacancies(vacancies200Array);
+    } else {
+      setTotalToSend(sortArr.length);
+      setError(true);
+      setErrorText(`Было доступно ${sortArr.length} вакансий для отклика`);
+      sendMessagetoVacancies(sortArr);
+    }
   };
 
   const sendMessagetoSelectedVacancies = () => {
