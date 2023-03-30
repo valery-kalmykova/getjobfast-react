@@ -84,11 +84,8 @@ export const DatatableVacancies = ({ vacancies }) => {
   };
 
   const dateBodyTemplate = (rowData) => {
-    const date = new Date(rowData.published_at);
-    const day = date.getDay();
-    const month = date.getMonth();
-    const year = date.getFullYear();
-    return `${day}.${month}.${year}`;
+    const date = new Date(rowData.published_at).toLocaleDateString();
+    return date;
   }
 
   const allowExpansion = (rowData) => {
