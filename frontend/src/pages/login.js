@@ -2,11 +2,10 @@ import React, {
   useEffect,
   useState,
   useContext,
-  useCallback,
   useMemo,
 } from "react";
 import { useCookies } from "react-cookie";
-import { getUserResumes, getUserVacancies, sendMessage } from "../utils/api";
+// import { getUserVacancies, sendMessage } from "../utils/api";
 import { Resumes } from "../components/Resumes/Resumes";
 import { UserContext, SelectedVacanciesContext } from "../utils/context";
 import styles from "./page.module.css";
@@ -17,18 +16,21 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Dialog } from "primereact/dialog";
 import { DatatableVacancies } from "../components/Datatable/datatable";
 import { ProgressBarDefault } from "../components/ProgressBar/ProgressBar";
+import { useDispatch, useSelector } from "../services/hooks.ts";
+import { getUserResumes, setNoUser } from "../services/actions/commonActions.ts";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [cookies, setCookie, removeCookie] = useCookies(["authorization"]);
-  const token = cookies.authorization;
+  // const token = cookies.authorization;
   const [resumes, setResumes] = useState();
   const [vacancies, setVacancies] = useState([]);
   const [selectedVacancies, setSelectedVacancies] = useContext(
     SelectedVacanciesContext
   );
-  console.log(selectedVacancies);
-  const [userCtx, setUserCtx] = useContext(UserContext);
+  // const [userCtx, setUserCtx] = useContext(UserContext);
+  const userCtx = useSelector((state) => state.common.user)
   const [message, setMessage] = useState(defaultMessage);
   const [showDialog, setShowDialog] = useState(false);
   const [totalToSend, setTotalToSend] = useState(0);
@@ -50,7 +52,7 @@ const LoginPage = () => {
   };
 
   const loadData = () => {
-    getUserResumes(token).then((res) => {
+    dispatch(getUserResumes()).then((res) => {
       const items = res.items;
       items[0] = { ...items[0], checked: true };
       setResumes(items);
@@ -124,7 +126,8 @@ const LoginPage = () => {
   const logout = async () => {
     removeCookie("authorization");
     sessionStorage.removeItem("auth_token");
-    setUserCtx({});
+    // setUserCtx({});
+    dispatch(setNoUser());
     navigate("/start");
   };
 

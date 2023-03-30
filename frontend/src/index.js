@@ -4,11 +4,11 @@ import { CookiesProvider } from "react-cookie";
 import './index.css';
 import App from './components/App/App';
 import reportWebVitals from './reportWebVitals';
-// import { makeServer } from './mock/server.ts';
+import { makeServer } from './mock/server.ts';
 import 'primeicons/primeicons.css';
 
 // not use for prod
-// makeServer({ environment: 'development' }); 
+makeServer({ environment: 'development' }); 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
