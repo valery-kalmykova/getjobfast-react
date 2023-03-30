@@ -83,6 +83,14 @@ export const DatatableVacancies = ({ vacancies }) => {
     );
   };
 
+  const dateBodyTemplate = (rowData) => {
+    const date = new Date(rowData.published_at);
+    const day = date.getDay();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  }
+
   const allowExpansion = (rowData) => {
     return rowData.name.length > 0;
   };
@@ -120,6 +128,7 @@ export const DatatableVacancies = ({ vacancies }) => {
         body={salaryBodyTemplate}
         sortable
       ></Column>
+      <Column field="published_at" header="Дата публикации"  body={dateBodyTemplate} sortable></Column>
       <Column expander={allowExpansion} style={{ width: "3em" }} />
     </DataTable>
   );
