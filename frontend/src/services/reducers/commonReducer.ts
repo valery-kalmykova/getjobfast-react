@@ -12,8 +12,9 @@ import {
   SEND_MSG_REQUEST,
   SEND_MSG_SUCCESS,
   SEND_MSG_FAILED,
-} from "../actions/actionsTypes";
+} from "../actions/commonActions";
 import { IApplicationActions } from "../actions";
+import { TResume } from "../../types/types";
 
 export type TCommonState = {
   getUserRequest: boolean;
@@ -23,7 +24,7 @@ export type TCommonState = {
   getResumesRequest: boolean;
   getResumesFailed: boolean;
   getResumesSuccess: boolean;
-  resumes: any;
+  resumes: TResume[];
   getSimilarVacanciesRequest: boolean;
   getSimilarVacanciesFailed: boolean;
   getSimilarVacanciesSuccess: boolean;
@@ -141,14 +142,14 @@ export const commonReducer = (
       };
     }
 
-    case  SEND_MSG_REQUEST: {
+    case SEND_MSG_REQUEST: {
       return {
         ...state,
         sendMsgRequest: true,
       };
     }
 
-    case  SEND_MSG_SUCCESS: {
+    case SEND_MSG_SUCCESS: {
       return {
         ...state,
         sendMsgRequest: false,
@@ -156,7 +157,7 @@ export const commonReducer = (
       };
     }
 
-    case  SEND_MSG_FAILED: {
+    case SEND_MSG_FAILED: {
       return {
         ...state,
         sendMsgFailed: true,

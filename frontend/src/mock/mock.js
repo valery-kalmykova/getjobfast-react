@@ -36,11 +36,9 @@ export const resumes = {
       gender: { id: "female", name: "Женский" },
       salary: null,
       photo: {
-        "40": "https://hhcdn.ru/photo/632293088.jpeg?t=1670907118&h=4hPqzYVgdE0a6VM2gxmLAA",
-        "100":
-          "https://hhcdn.ru/photo/632293089.jpeg?t=1670907118&h=388totdxDpvWcZAp4hPQCA",
-        "500":
-          "https://hhcdn.ru/photo/632293090.jpeg?t=1670907118&h=0asD1fNws8aDxSpRSUVOrQ",
+        40: "https://hhcdn.ru/photo/632293088.jpeg?t=1670907118&h=4hPqzYVgdE0a6VM2gxmLAA",
+        100: "https://hhcdn.ru/photo/632293089.jpeg?t=1670907118&h=388totdxDpvWcZAp4hPQCA",
+        500: "https://hhcdn.ru/photo/632293090.jpeg?t=1670907118&h=0asD1fNws8aDxSpRSUVOrQ",
         id: "142884552",
         small:
           "https://hhcdn.ru/photo/632293089.jpeg?t=1670907118&h=388totdxDpvWcZAp4hPQCA",
@@ -103,7 +101,7 @@ export const resumes = {
             name: "Лаборатория Касперского",
             url: "https://api.hh.ru/employers/1057",
             alternate_url: "https://hh.ru/employer/1057",
-            logo_urls: { "90": "https://hh.ru/employer/logo/1057" },
+            logo_urls: { 90: "https://hh.ru/employer/logo/1057" },
           },
           position: "HTML-developer",
         },
@@ -132,7 +130,7 @@ export const resumes = {
             name: "Почта России",
             url: "https://api.hh.ru/employers/4352",
             alternate_url: "https://hh.ru/employer/4352",
-            logo_urls: { "90": "https://hh.ru/employer/logo/4352" },
+            logo_urls: { 90: "https://hh.ru/employer/logo/4352" },
           },
         },
         {
@@ -217,11 +215,9 @@ export const resumes = {
       gender: { id: "female", name: "Женский" },
       salary: null,
       photo: {
-        "40": "https://hhcdn.ru/photo/632293088.jpeg?t=1670907118&h=4hPqzYVgdE0a6VM2gxmLAA",
-        "100":
-          "https://hhcdn.ru/photo/632293089.jpeg?t=1670907118&h=388totdxDpvWcZAp4hPQCA",
-        "500":
-          "https://hhcdn.ru/photo/632293090.jpeg?t=1670907118&h=0asD1fNws8aDxSpRSUVOrQ",
+        40: "https://hhcdn.ru/photo/632293088.jpeg?t=1670907118&h=4hPqzYVgdE0a6VM2gxmLAA",
+        100: "https://hhcdn.ru/photo/632293089.jpeg?t=1670907118&h=388totdxDpvWcZAp4hPQCA",
+        500: "https://hhcdn.ru/photo/632293090.jpeg?t=1670907118&h=0asD1fNws8aDxSpRSUVOrQ",
         id: "142884552",
         small:
           "https://hhcdn.ru/photo/632293089.jpeg?t=1670907118&h=388totdxDpvWcZAp4hPQCA",
@@ -284,7 +280,7 @@ export const resumes = {
             name: "Лаборатория Касперского",
             url: "https://api.hh.ru/employers/1057",
             alternate_url: "https://hh.ru/employer/1057",
-            logo_urls: { "90": "https://hh.ru/employer/logo/1057" },
+            logo_urls: { 90: "https://hh.ru/employer/logo/1057" },
           },
           position: "HTML-developer",
         },
@@ -313,7 +309,7 @@ export const resumes = {
             name: "Почта России",
             url: "https://api.hh.ru/employers/4352",
             alternate_url: "https://hh.ru/employer/4352",
-            logo_urls: { "90": "https://hh.ru/employer/logo/4352" },
+            logo_urls: { 90: "https://hh.ru/employer/logo/4352" },
           },
         },
         {
@@ -429,8 +425,8 @@ export const vacancies = [
       url: "https://api.hh.ru/employers/14402",
       alternate_url: "https://hh.ru/employer/14402",
       logo_urls: {
-        "90": "https://hhcdn.ru/employer-logo/3634767.png",
-        "240": "https://hhcdn.ru/employer-logo/3634768.png",
+        90: "https://hhcdn.ru/employer-logo/3634767.png",
+        240: "https://hhcdn.ru/employer-logo/3634768.png",
         original: "https://hhcdn.ru/employer-logo-original/798470.png",
       },
       vacancies_url: "https://api.hh.ru/vacancies?employer_id=14402",
@@ -479,8 +475,8 @@ export const vacancies = [
       url: "https://api.hh.ru/employers/1102601",
       alternate_url: "https://hh.ru/employer/1102601",
       logo_urls: {
-        "90": "https://hhcdn.ru/employer-logo/3951719.png",
-        "240": "https://hhcdn.ru/employer-logo/3951720.png",
+        90: "https://hhcdn.ru/employer-logo/3951719.png",
+        240: "https://hhcdn.ru/employer-logo/3951720.png",
         original: "https://hhcdn.ru/employer-logo-original/877711.jpeg",
       },
       vacancies_url: "https://api.hh.ru/vacancies?employer_id=1102601",
@@ -529,8 +525,8 @@ export const vacancies = [
       url: "https://api.hh.ru/employers/14402",
       alternate_url: "https://hh.ru/employer/14402",
       logo_urls: {
-        "90": "https://hhcdn.ru/employer-logo/3634767.png",
-        "240": "https://hhcdn.ru/employer-logo/3634768.png",
+        90: "https://hhcdn.ru/employer-logo/3634767.png",
+        240: "https://hhcdn.ru/employer-logo/3634768.png",
         original: "https://hhcdn.ru/employer-logo-original/798470.png",
       },
       vacancies_url: "https://api.hh.ru/vacancies?employer_id=14402",
@@ -579,8 +575,8 @@ export const vacancies = [
       url: "https://api.hh.ru/employers/1102601",
       alternate_url: "https://hh.ru/employer/1102601",
       logo_urls: {
-        "90": "https://hhcdn.ru/employer-logo/3951719.png",
-        "240": "https://hhcdn.ru/employer-logo/3951720.png",
+        90: "https://hhcdn.ru/employer-logo/3951719.png",
+        240: "https://hhcdn.ru/employer-logo/3951720.png",
         original: "https://hhcdn.ru/employer-logo-original/877711.jpeg",
       },
       vacancies_url: "https://api.hh.ru/vacancies?employer_id=1102601",
@@ -629,8 +625,8 @@ export const vacancies = [
       url: "https://api.hh.ru/employers/14402",
       alternate_url: "https://hh.ru/employer/14402",
       logo_urls: {
-        "90": "https://hhcdn.ru/employer-logo/3634767.png",
-        "240": "https://hhcdn.ru/employer-logo/3634768.png",
+        90: "https://hhcdn.ru/employer-logo/3634767.png",
+        240: "https://hhcdn.ru/employer-logo/3634768.png",
         original: "https://hhcdn.ru/employer-logo-original/798470.png",
       },
       vacancies_url: "https://api.hh.ru/vacancies?employer_id=14402",
@@ -679,8 +675,8 @@ export const vacancies = [
       url: "https://api.hh.ru/employers/1102601",
       alternate_url: "https://hh.ru/employer/1102601",
       logo_urls: {
-        "90": "https://hhcdn.ru/employer-logo/3951719.png",
-        "240": "https://hhcdn.ru/employer-logo/3951720.png",
+        90: "https://hhcdn.ru/employer-logo/3951719.png",
+        240: "https://hhcdn.ru/employer-logo/3951720.png",
         original: "https://hhcdn.ru/employer-logo-original/877711.jpeg",
       },
       vacancies_url: "https://api.hh.ru/vacancies?employer_id=1102601",
@@ -729,8 +725,8 @@ export const vacancies = [
       url: "https://api.hh.ru/employers/14402",
       alternate_url: "https://hh.ru/employer/14402",
       logo_urls: {
-        "90": "https://hhcdn.ru/employer-logo/3634767.png",
-        "240": "https://hhcdn.ru/employer-logo/3634768.png",
+        90: "https://hhcdn.ru/employer-logo/3634767.png",
+        240: "https://hhcdn.ru/employer-logo/3634768.png",
         original: "https://hhcdn.ru/employer-logo-original/798470.png",
       },
       vacancies_url: "https://api.hh.ru/vacancies?employer_id=14402",
@@ -779,8 +775,8 @@ export const vacancies = [
       url: "https://api.hh.ru/employers/1102601",
       alternate_url: "https://hh.ru/employer/1102601",
       logo_urls: {
-        "90": "https://hhcdn.ru/employer-logo/3951719.png",
-        "240": "https://hhcdn.ru/employer-logo/3951720.png",
+        90: "https://hhcdn.ru/employer-logo/3951719.png",
+        240: "https://hhcdn.ru/employer-logo/3951720.png",
         original: "https://hhcdn.ru/employer-logo-original/877711.jpeg",
       },
       vacancies_url: "https://api.hh.ru/vacancies?employer_id=1102601",

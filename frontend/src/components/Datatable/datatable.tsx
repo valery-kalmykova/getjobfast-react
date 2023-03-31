@@ -1,20 +1,33 @@
 import React, { useState, useContext } from "react";
-import styles from "./datatable.module.css";
+import styles from "./styles.module.css";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
-import { FilterMatchMode, FilterOperator } from "primereact/api";
+import { FilterMatchMode } from "primereact/api";
 import { SelectedVacanciesContext } from "../../utils/context";
 
-export const DatatableVacancies = ({ vacancies }) => {
+interface Ivacancies {
+  vacancies: [];
+}
+
+export const DatatableVacancies = ({ vacancies }: Ivacancies) => {
   const [selectedVacancies, setSelectedVacancies] = useContext(
-    SelectedVacanciesContext
+    SelectedVacanciesContext,
   );
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
-  const [expandedRows, setExpandedRows] = useState(null);
+  // const [expandedRows, setExpandedRows] = useState([]);
+
+  const onGlobalFilterChange = (e: any) => {
+    const value = e.target.value;
+    let _filters = { ...filters };
+    _filters["global"].value = value;
+
+    setFilters(_filters);
+    setGlobalFilterValue(value);
+  };
 
   const renderHeader = () => {
     return (
@@ -31,18 +44,9 @@ export const DatatableVacancies = ({ vacancies }) => {
     );
   };
 
-  const onGlobalFilterChange = (e) => {
-    const value = e.target.value;
-    let _filters = { ...filters };
-    _filters["global"].value = value;
-
-    setFilters(_filters);
-    setGlobalFilterValue(value);
-  };
-
   const header = renderHeader();
 
-  const salaryBodyTemplate = (rowData) => {
+  const salaryBodyTemplate = (rowData: any) => {
     if (rowData.salary !== null && rowData.salary.from !== null) {
       return (
         <React.Fragment>
@@ -58,11 +62,13 @@ export const DatatableVacancies = ({ vacancies }) => {
     }
   };
 
-  const rowExpansionTemplate = (rowData) => {
+  const rowExpansionTemplate = (rowData: any) => {
     return (
       <div className={styles.expandContainer}>
         <h4>Обязанности:</h4>
-        <p>{rowData.snippet.responsibility && rowData.snippet.responsibility}</p>
+        <p>
+          {rowData.snippet.responsibility && rowData.snippet.responsibility}
+        </p>
         <h4>Требования:</h4>
         <p>{rowData.snippet.requirement && rowData.snippet.requirement}</p>
         <h4>График работы:</h4>
@@ -83,16 +89,16 @@ export const DatatableVacancies = ({ vacancies }) => {
     );
   };
 
-  const dateBodyTemplate = (rowData) => {
+  const dateBodyTemplate = (rowData: any) => {
     const date = new Date(rowData.published_at).toLocaleDateString();
     return date;
-  }
+  };
 
-  const allowExpansion = (rowData) => {
+  const allowExpansion = (rowData: any) => {
     return rowData.name.length > 0;
   };
 
-  if(!vacancies) return null;
+  if (!vacancies) return null;
 
   return (
     <DataTable
@@ -102,8 +108,8 @@ export const DatatableVacancies = ({ vacancies }) => {
       rowsPerPageOptions={[100, 200]}
       header={header}
       filters={filters}
-      expandedRows={expandedRows}
-      onRowToggle={(e) => setExpandedRows(e.data)}
+      // expandedRows={expandedRows}
+      // onRowToggle={(e: DataTableRowToggleEvent) => setExpandedRows(e.data)}
       rowExpansionTemplate={rowExpansionTemplate}
       dataKey="id"
       selectionMode="checkbox"
@@ -113,7 +119,7 @@ export const DatatableVacancies = ({ vacancies }) => {
     >
       <Column
         selectionMode="multiple"
-        selectionAriaLabel="name"
+        // selectionAriaLabel="name"
         headerStyle={{ width: "3em" }}
       ></Column>
       <Column field="name" header="Вакансия" sortable></Column>
@@ -125,7 +131,12 @@ export const DatatableVacancies = ({ vacancies }) => {
         body={salaryBodyTemplate}
         sortable
       ></Column>
-      <Column field="published_at" header="Дата публикации"  body={dateBodyTemplate} sortable></Column>
+      <Column
+        field="published_at"
+        header="Дата публикации"
+        body={dateBodyTemplate}
+        sortable
+      ></Column>
       <Column expander={allowExpansion} style={{ width: "3em" }} />
     </DataTable>
   );

@@ -1,35 +1,31 @@
-import React, {
-  useEffect,
-  useState,
-  useContext,
-  useMemo,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-// import { getUserVacancies, sendMessage } from "../utils/api";
+import { sendMessage } from "../utils/api";
 import { Resumes } from "../components/Resumes/Resumes";
-import { UserContext, SelectedVacanciesContext } from "../utils/context";
 import styles from "./page.module.css";
 import { useNavigate } from "react-router-dom";
 import { defaultMessage } from "../utils/constants";
 import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Dialog } from "primereact/dialog";
-import { DatatableVacancies } from "../components/Datatable/datatable";
+// import { DatatableVacancies } from "../components/Datatable/datatable";
 import { ProgressBarDefault } from "../components/ProgressBar/ProgressBar";
-import { useDispatch, useSelector } from "../services/hooks.ts";
-import { getUserResumes, setNoUser } from "../services/actions/commonActions.ts";
+import { useDispatch, useSelector } from "../services/hooks";
+import {
+  // getUserResumes,
+  // getUserVacancies,
+  setNoUser,
+} from "../services/actions/commonActions";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [cookies, setCookie, removeCookie] = useCookies(["authorization"]);
-  // const token = cookies.authorization;
-  const [resumes, setResumes] = useState();
-  const [vacancies, setVacancies] = useState([]);
-  const [selectedVacancies, setSelectedVacancies] = useContext(
-    SelectedVacanciesContext
-  );
-  const [userCtx, setUserCtx] = useContext(UserContext);
+  const [cookies] = useCookies(["authorization"]);
+  const token = cookies.authorization;
+  const user = useSelector((state) => state.common.user);
+  console.log(user);
+  const resumes = useSelector((state) => state.common.resumes);
+  const vacancies = useSelector((state) => state.common.similarVacancies);
   const [message, setMessage] = useState(defaultMessage);
   const [showDialog, setShowDialog] = useState(false);
   const [totalToSend, setTotalToSend] = useState(0);
@@ -37,60 +33,65 @@ const LoginPage = () => {
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
 
-  const filteresList = (data) => {
-    return data.filter(
-      (item) =>
-        item.has_test === false && !item.relations.includes("got_response")
-    );
-  };
+  // const filteresList = (data: any) => {
+  //   return data.filter(
+  //     (item: any) =>
+  //       item.has_test === false && !item.relations.includes("got_response"),
+  //   );
+  // };
 
-  const loadVacancies = (resumeId, page) => {
-    getUserVacancies(token, resumeId, page).then((res) => {
-      setVacancies((vacancies) => [...vacancies, ...filteresList(res)]);
-    });
-  };
+  // const loadVacancies = (resumeId: any, page: any) => {
+  //   getUserVacancies(token, resumeId, page).then((res) => {
+  //     setVacancies((vacancies) => [...vacancies, ...filteresList(res)]);
+  //   });
+  // };
 
-  const loadData = () => {
-    dispatch(getUserResumes()).then((res) => {
-      const items = res.items;
-      items[0] = { ...items[0], checked: true };
-      setResumes(items);
-      let i = 0;
-      while (i < 20) {
-        loadVacancies(items[0].id, i);
-        i++;
-      }
-    });
-  };
+  // const loadData = () => {
+  //   dispatch(getUserResumes(token));
+  //   // dispatch(getUserVacancies(token, resumes[0].id, 0));
+  //   // dispatch(getUserResumes()).then((res) => {
+  //   //   const items = res.items;
+  //   //   items[0] = { ...items[0], checked: true };
+  //   //   setResumes(items);
+  //   //   let i = 0;
+  //   //   while (i < 20) {
+  //   //     loadVacancies(items[0].id, i);
+  //   //     i++;
+  //   //   }
+  //   // });
+  // };
 
   useEffect(() => {
-    sessionStorage.setItem("auth_token", token);
+    // dispatch(getUserResumes(token));
   }, []);
 
-  useMemo(() => {
-    loadData();
-  }, []);
+  // useMemo(() => {
+  //   loadData();
+  // }, []);
 
-  const sendMessagetoVacancies = (array) => {
+  const sendMessagetoVacancies = (array: any) => {
     setShowDialog(true);
-    array.map((item) => {
+    array.map((item: any) => {
       const formData = new FormData();
-      formData.append("resume_id", resumes[0].id);
+      formData.append("resume_id", resumes![0].id);
       formData.append("vacancy_id", item.id);
       formData.append("message", message);
       sendMessage(token, formData)
-        .then(() => setCounter((counter) => counter + 1))
+        .then(() => setCounter(counter + 1))
         .catch(() => {
           setError(true);
           setErrorText(
-            "Лимит исчерпан, Вы отправили 200 откликов за день. До завтра!"
+            "Лимит исчерпан, Вы отправили 200 откликов за день. До завтра!",
           );
         });
     });
   };
 
   const sendMessageto200Vacancies = () => {
-    const sortArr = vacancies.sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
+    // const sortArr =  vacancies.sort(
+    //   (a: any, b: any) => new Date(b.published_at) - new Date(a.published_at),
+    // );
+    const sortArr = vacancies;
     if (sortArr.length >= 200) {
       setTotalToSend(200);
       const vacancies200Array = sortArr.slice(0, 199);
@@ -103,28 +104,28 @@ const LoginPage = () => {
     }
   };
 
-  const sendMessagetoSelectedVacancies = () => {
-    setTotalToSend(selectedVacancies.length);
-    sendMessagetoVacancies(selectedVacancies);
-    setError(true);
-    setErrorText(
-      `Было отмечено ${selectedVacancies.length} вакансии(-ий, -ия)`
-    );
-  };
+  // const sendMessagetoSelectedVacancies = () => {
+  //   setTotalToSend(selectedVacancies.length);
+  //   sendMessagetoVacancies(selectedVacancies);
+  //   setError(true);
+  //   setErrorText(
+  //     `Было отмечено ${selectedVacancies.length} вакансии(-ий, -ия)`,
+  //   );
+  // };
 
   const closeDialog = () => {
     setShowDialog(false);
-    setVacancies([]);
+    // setVacancies([]);
     setCounter(0);
     setTotalToSend(0);
     setError(false);
-    setSelectedVacancies([]);
-    loadData();
+    // setSelectedVacancies([]);
+    // loadData();
   };
 
   const logout = async () => {
-    removeCookie("authorization");
-    sessionStorage.removeItem("auth_token");
+    // removeCookie("authorization");
+    // sessionStorage.removeItem("auth_token");
     // setUserCtx({});
     dispatch(setNoUser());
     navigate("/start");
@@ -141,7 +142,7 @@ const LoginPage = () => {
               rel="noreferrer"
               className={styles.loginUserName}
             >
-              {userCtx.first_name + " " + userCtx.last_name}
+              {user.first_name + " " + user.last_name}
             </a>
             <Button
               className="p-button-danger p-button-outlined"
@@ -152,7 +153,7 @@ const LoginPage = () => {
           </div>
           <h3 className={styles.loginTitle}>Мои резюме:</h3>
           <ul className={styles.loginListResumes}>
-            <Resumes resumes={resumes} />
+            <Resumes />
           </ul>
           <h3 className={styles.loginTitle}>Сопроводительное письмо:</h3>
           <InputTextarea
@@ -174,7 +175,7 @@ const LoginPage = () => {
             </Button>
             <Button
               className="p-button p-component"
-              onClick={sendMessagetoSelectedVacancies}
+              // onClick={sendMessagetoSelectedVacancies}
             >
               <span className="p-button-icon p-c p-button-icon-left pi pi-send"></span>
               <span className="p-button-label p-c">
@@ -185,7 +186,7 @@ const LoginPage = () => {
           <h3 className={styles.loginTitle}>
             Подходящие вакансии к выбранному резюме:
           </h3>
-          <DatatableVacancies vacancies={vacancies} />
+          {/* <DatatableVacancies vacancies={vacancies} /> */}
         </div>
       </div>
       <Dialog

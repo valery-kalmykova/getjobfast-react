@@ -1,24 +1,30 @@
-import {
-  GET_USER_REQUEST,
-  GET_USER_SUCCESS,
-  GET_USER_FAILED,
-  SET_NO_USER,
-  GET_RESUMES_REQUEST,
-  GET_RESUMES_SUCCESS,
-  GET_RESUMES_FAILED,
-  GET_SIMILAR_VACANCIES_REQUEST,
-  GET_SIMILAR_VACANCIES_SUCCESS,
-  GET_SIMILAR_VACANCIES_FAILED,
-  SEND_MSG_REQUEST,
-  SEND_MSG_SUCCESS,
-  SEND_MSG_FAILED,
-} from "./actionsTypes";
+import { TResume } from "../../types/types";
 import {
   baseUrl,
   checkResponse,
   tokenRequestOptions,
 } from "../../utils/constants";
 import type { AppThunk, AppDispatch } from "../store";
+
+export const GET_USER_REQUEST: "GET_USER_REQUEST" = "GET_USER_REQUEST";
+export const GET_USER_SUCCESS: "GET_USER_SUCCESS" = "GET_USER_SUCCESS";
+export const GET_USER_FAILED: "GET_USER_FAILED" = "GET_USER_FAILED";
+export const SET_NO_USER: "SET_NO_USER" = "SET_NO_USER";
+
+export const GET_RESUMES_REQUEST: "GET_RESUMES_REQUEST" = "GET_RESUMES_REQUEST";
+export const GET_RESUMES_SUCCESS: "GET_RESUMES_SUCCESS" = "GET_RESUMES_SUCCESS";
+export const GET_RESUMES_FAILED: "GET_RESUMES_FAILED" = "GET_RESUMES_FAILED";
+
+export const GET_SIMILAR_VACANCIES_REQUEST: "GET_SIMILAR_VACANCIES_REQUEST" =
+  "GET_SIMILAR_VACANCIES_REQUEST";
+export const GET_SIMILAR_VACANCIES_SUCCESS: "GET_SIMILAR_VACANCIES_SUCCESS" =
+  "GET_SIMILAR_VACANCIES_SUCCESS";
+export const GET_SIMILAR_VACANCIES_FAILED: "GET_SIMILAR_VACANCIES_FAILED" =
+  "GET_SIMILAR_VACANCIES_FAILED";
+
+export const SEND_MSG_REQUEST: "SEND_MSG_REQUEST" = "SEND_MSG_REQUEST";
+export const SEND_MSG_SUCCESS: "SEND_MSG_SUCCESS" = "SEND_MSG_SUCCESS";
+export const SEND_MSG_FAILED: "SEND_MSG_FAILED" = "SEND_MSG_FAILED";
 
 interface IfetchUserRequest {
   readonly type: typeof GET_USER_REQUEST;
@@ -117,7 +123,7 @@ export const fetchUResumesRequest = (): TCommonActions => ({
   type: GET_RESUMES_REQUEST,
 });
 
-export const fetchUResumesSuccess = (data: any): TCommonActions => ({
+export const fetchUResumesSuccess = (data: TResume[]): TCommonActions => ({
   type: GET_RESUMES_SUCCESS,
   payload: { data },
 });
@@ -156,11 +162,11 @@ export const sendMsgFailed = (error: {}): TCommonActions => ({
 });
 
 export const getOwnUser: AppThunk<Promise<TCommonActions>> =
-  (token) => (dispatch: AppDispatch) => {
+  (token: string) => (dispatch: AppDispatch) => {
     dispatch(fetchUserRequest());
     return fetch(
       `${baseUrl}/api/me`,
-      tokenRequestOptions({ accessToken: token, method: "GET", bodyData: {} })
+      tokenRequestOptions({ accessToken: token, method: "GET", bodyData: {} }),
     )
       .then(checkResponse)
       .then((json) => {
@@ -175,7 +181,7 @@ export const getUserResumes: AppThunk<Promise<TCommonActions>> =
     dispatch(fetchUResumesRequest());
     return fetch(
       `${baseUrl}/api/resumes/mine`,
-      tokenRequestOptions({ accessToken: token, method: "GET", bodyData: {} })
+      tokenRequestOptions({ accessToken: token, method: "GET", bodyData: {} }),
     )
       .then(checkResponse)
       .then((json) => {
@@ -190,7 +196,7 @@ export const getUserVacancies: AppThunk<Promise<TCommonActions>> =
     dispatch(fetchSimilarVacanciesRequest());
     return fetch(
       `${baseUrl}/api/resumes/${resume_id}/similar_vacancies/${page}`,
-      tokenRequestOptions({ accessToken: token, method: "GET", bodyData: {} })
+      tokenRequestOptions({ accessToken: token, method: "GET", bodyData: {} }),
     )
       .then(checkResponse)
       .then((json) => {
@@ -209,7 +215,7 @@ export const sendMessage: AppThunk<Promise<TCommonActions>> =
         accessToken: token,
         method: "GET",
         bodyData: formData,
-      })
+      }),
     )
       .then(checkResponse)
       .then((json) => {
