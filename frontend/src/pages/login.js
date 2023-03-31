@@ -29,8 +29,7 @@ const LoginPage = () => {
   const [selectedVacancies, setSelectedVacancies] = useContext(
     SelectedVacanciesContext
   );
-  // const [userCtx, setUserCtx] = useContext(UserContext);
-  const userCtx = useSelector((state) => state.common.user)
+  const [userCtx, setUserCtx] = useContext(UserContext);
   const [message, setMessage] = useState(defaultMessage);
   const [showDialog, setShowDialog] = useState(false);
   const [totalToSend, setTotalToSend] = useState(0);
@@ -91,20 +90,20 @@ const LoginPage = () => {
   };
 
   const sendMessageto200Vacancies = () => {
-    if (vacancies.length >= 200) {
+    const sortArr = vacancies.sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
+    if (sortArr.length >= 200) {
       setTotalToSend(200);
-      const vacancies200Array = vacancies.slice(0, 199);
+      const vacancies200Array = sortArr.slice(0, 199);
       sendMessagetoVacancies(vacancies200Array);
     } else {
-      setTotalToSend(vacancies.length);
+      setTotalToSend(sortArr.length);
       setError(true);
-      setErrorText(`Было доступно ${vacancies.length} вакансий для отклика`);
-      sendMessagetoVacancies(vacancies);
+      setErrorText(`Было доступно ${sortArr.length} вакансий для отклика`);
+      sendMessagetoVacancies(sortArr);
     }
   };
 
   const sendMessagetoSelectedVacancies = () => {
-    console.log(selectedVacancies.length);
     setTotalToSend(selectedVacancies.length);
     sendMessagetoVacancies(selectedVacancies);
     setError(true);
