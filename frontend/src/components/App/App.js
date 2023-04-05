@@ -15,7 +15,6 @@ import "primeicons/primeicons.css";
 function App() {
   const [cookies] = useCookies();
   const [userCtx, setUserCtx] = useState(null);
-
   const [selectedVacancies, setSelectedVacancies] = useState(null);
 
   useEffect(() => {

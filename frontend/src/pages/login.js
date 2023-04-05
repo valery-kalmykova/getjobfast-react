@@ -1,26 +1,20 @@
-import React, {
-  useEffect,
-  useState,
-  useContext,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import { useCookies } from "react-cookie";
 import { getUserResumes, getUserVacancies, sendMessage } from "../utils/api";
-import { Resumes } from "../components/Resumes/Resumes";
 import { UserContext, SelectedVacanciesContext } from "../utils/context";
 import styles from "./page.module.css";
 import { useNavigate } from "react-router-dom";
 import { defaultMessage } from "../utils/constants";
 import { Button } from "primereact/button";
-import { InputTextarea } from "primereact/inputtextarea";
 import { Dialog } from "primereact/dialog";
-import { DatatableVacancies } from "../components/Datatable/datatable";
 import { ProgressBarDefault } from "../components/ProgressBar/ProgressBar";
+import { MenuMain } from "../components/Menu/Menu";
+import { Pro } from "./pro";
+import { Lite } from "./lite";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies(["authorization"]);
+  const [cookies, removeCookie] = useCookies(["authorization"]);
   const token = cookies.authorization;
   const [resumes, setResumes] = useState();
   const [vacancies, setVacancies] = useState([]);
@@ -34,6 +28,7 @@ const LoginPage = () => {
   const [counter, setCounter] = useState(0);
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
+  const [version, setVersion] = useState(0);
 
   const filteresList = (data) => {
     return data.filter(
@@ -88,7 +83,9 @@ const LoginPage = () => {
   };
 
   const sendMessageto200Vacancies = () => {
-    const sortArr = vacancies.sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
+    const sortArr = vacancies.sort(
+      (a, b) => new Date(b.published_at) - new Date(a.published_at)
+    );
     if (sortArr.length >= 200) {
       setTotalToSend(200);
       const vacancies200Array = sortArr.slice(0, 199);
@@ -131,58 +128,37 @@ const LoginPage = () => {
     <div className={styles.loginMain}>
       <div className={styles.loginView}>
         <div className={styles.loginContent}>
-          <div className={styles.loginUser}>
-            <a
-              href="https://hh.ru/"
-              target="_blank"
-              rel="noreferrer"
-              className={styles.loginUserName}
-            >
-              {userCtx.first_name + " " + userCtx.last_name}
-            </a>
-            <Button
-              className="p-button-danger p-button-outlined"
-              onClick={logout}
-            >
-              Выйти
-            </Button>
+          <div className={styles.MenuLogin}>
+            <MenuMain activeIndex={version} setActiveIndex={setVersion} />
+            <div className={styles.loginUser}>
+              <a
+                href="https://hh.ru/"
+                target="_blank"
+                rel="noreferrer"
+                className={styles.loginUserName}
+              >
+                {userCtx.first_name + " " + userCtx.last_name}
+              </a>
+              <Button
+                className="p-button-danger p-button-outlined"
+                onClick={logout}
+              >
+                Выйти
+              </Button>
+            </div>
           </div>
-          <h3 className={styles.loginTitle}>Мои резюме:</h3>
-          <ul className={styles.loginListResumes}>
-            <Resumes resumes={resumes} />
-          </ul>
-          <h3 className={styles.loginTitle}>Сопроводительное письмо:</h3>
-          <InputTextarea
-            className={styles.loginTextarea}
-            rows={5}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            autoResize
-          />
-          <div className={styles.loginBtns}>
-            <Button
-              className="p-button p-component"
-              onClick={sendMessageto200Vacancies}
-            >
-              <span className="p-button-icon p-c p-button-icon-left pi pi-send"></span>
-              <span className="p-button-label p-c">
-                Разослать отклики на 200 вакансий
-              </span>
-            </Button>
-            <Button
-              className="p-button p-component"
-              onClick={sendMessagetoSelectedVacancies}
-            >
-              <span className="p-button-icon p-c p-button-icon-left pi pi-send"></span>
-              <span className="p-button-label p-c">
-                Разослать отклики отмеченные вакансии
-              </span>
-            </Button>
-          </div>
-          <h3 className={styles.loginTitle}>
-            Подходящие вакансии к выбранному резюме:
-          </h3>
-          <DatatableVacancies vacancies={vacancies} />
+          {version === 0 && <Lite
+            sendMessageto200Vacancies={sendMessageto200Vacancies}
+            message={message}
+            setMessage={setMessage}
+          />}
+          {version === 1 && <Pro
+            vacanciesP={vacancies}
+            resumesP={resumes}
+            sendMessagetoSelectedVacancies={sendMessagetoSelectedVacancies}
+            message={message}
+            setMessage={setMessage}
+          />}
         </div>
       </div>
       <Dialog
