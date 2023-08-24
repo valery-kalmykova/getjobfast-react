@@ -33,6 +33,18 @@ export const getUserResumes = async (token) => {
     .then((data) => data);
 };
 
+export const getUserResumeById = async (token, id) => {
+  return fetch(`${URL}/api/resumes/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  })
+    .then(checkResponse)
+    .then((data) => data);
+};
+
 export const getUserVacancies = async (token, resume_id, page) => {
   return fetch(`${URL}/api/resumes/${resume_id}/similar_vacancies/${page}`, {
     method: "GET",
@@ -52,6 +64,19 @@ export const sendMessage = async (token, formData) => {
       "Authorization": `Bearer ${token}`,
     },
     body: formData
+  })
+    .then(checkResponse)
+    .then((data) => data);
+};
+
+export const saveUser = async (token, formData) => {  
+  return fetch(`${URL}/users/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify(formData)
   })
     .then(checkResponse)
     .then((data) => data);

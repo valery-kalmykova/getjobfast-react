@@ -12,7 +12,7 @@ import { MenuMain } from "../components/Menu/Menu";
 import { Pro } from "./pro";
 import { Lite } from "./lite";
 
-const LoginPage = () => {
+const WorkPage = () => {
   const navigate = useNavigate();
   const [cookies, removeCookie] = useCookies(["authorization"]);
   const token = cookies.authorization;
@@ -173,4 +173,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default WorkPage;

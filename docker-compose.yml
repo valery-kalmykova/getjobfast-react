@@ -1,39 +1,44 @@
 version: '3.9'
 
 services:
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    env_file:
-      - .env
+  db:
+    container_name: postgres-getjobfast
+    image: postgres:15-alpine
     restart: always
-    ports:
-      - ${MONGO_PORT}:${MONGO_PORT}
-    volumes:
-      - mongodb_data_container:/data/db
     environment:
-      - MONGO_INITDB_DATABASE=${MONGO_DATEBASE}
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
-    networks:
+      - POSTGRES_USER=${TYPEORM_USERNAME}
+      - POSTGRES_PASSWORD=${TYPEORM_PASSWORD}
+      - POSTGRES_DB=${TYPEORM_DATABASE}
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    networks: 
       - back
  
   backend:
-    container_name: backend
+    container_name: backend-getjobfast
     build:
       context: ./backend
       dockerfile: ./Dockerfile
     restart: unless-stopped    
     networks:
-      - back    
+      - back
+      - front    
     ports:
       - 4000:4000
+    environment:
+      - TYPEORM_USERNAME=${TYPEORM_USERNAME}
+      - TYPEORM_PASSWORD=${TYPEORM_PASSWORD}
+      - TYPEORM_DATABASE=${TYPEORM_DATABASE}
+      - TYPEORM_PORT=5432
+      - TYPEORM_HOST=db
     env_file: .env
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
-      - mongodb
+      - db
 
   nginx:
     container_name: frontend
@@ -41,7 +46,7 @@ services:
       context: ./
       dockerfile: ./frontend/Dockerfile
     ports:
-      - 80:80
+      - 4001:4001
     restart: unless-stopped
     env_file: .env
     networks: 
@@ -52,6 +57,3 @@ networks:
     driver: bridge
   front:
     driver: bridge
-
-volumes:
-  mongodb_data_container:

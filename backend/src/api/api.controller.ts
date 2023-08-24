@@ -29,6 +29,12 @@ export class ApiController {
     return this.apiService.getResumes(accessToken);
   }
 
+  @Get('resumes/:id')
+  async getResumesById(@Req() req: any, @Param('id') id: string,) {
+    const accessToken = req.user.accessToken;
+    return this.apiService.getResumeById(accessToken, id);
+  }
+
   @Get('resumes/:resumes_id/similar_vacancies/:page')
   async getVacanciesSimilarToResume(
     @Req() req: any,

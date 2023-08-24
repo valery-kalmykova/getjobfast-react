@@ -3,7 +3,7 @@ import { useCookies } from "react-cookie";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "../../pages/home";
-import LoginPage from "../../pages/login";
+import WorkPage from "../../pages/workPage";
 import { UserContext, SelectedVacanciesContext } from "../../utils/context";
 import { getOwnUser } from "../../utils/api";
 import { PrivateRoute } from "../PrivateRoute";
@@ -11,6 +11,7 @@ import { PrivateRoute } from "../PrivateRoute";
 import "primereact/resources/themes/saga-green/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+import SuccessLoginPage from "../../pages/successLogin";
 
 function App() {
   const [cookies] = useCookies();
@@ -54,8 +55,8 @@ const ApplicationView = () => {
         {/* <Route path="/" element={<LoginPage />}/>
         <Route path="/login" element={<LoginPage />}/> */}
         <Route path="/" element={<PrivateRoute />}>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<WorkPage />} />
+          <Route path="/login" element={<SuccessLoginPage />} />
         </Route>
       </Routes>
     </Router>

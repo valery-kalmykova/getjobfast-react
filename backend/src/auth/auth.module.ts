@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-// import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from 'src/users/users.module';
 import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
@@ -11,8 +11,8 @@ import { ApiModule } from 'src/api/api.module';
 
 @Module({
   imports: [
-    // UsersModule,
-    // ApiModule,
+    UsersModule,
+    ApiModule,
     PassportModule,
     JwtModule.registerAsync({
       useFactory: async () => {
