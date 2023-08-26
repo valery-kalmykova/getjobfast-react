@@ -8,7 +8,6 @@ services:
     environment:
       - POSTGRES_USER=${TYPEORM_USERNAME}
       - POSTGRES_PASSWORD=${TYPEORM_PASSWORD}
-      - POSTGRES_DB=${TYPEORM_DATABASE}
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     ports:
@@ -26,12 +25,11 @@ services:
       - back
       - front    
     ports:
-      - 4000:4000
+      - ${BACKEND_PORT}:${BACKEND_PORT}
     environment:
       - TYPEORM_USERNAME=${TYPEORM_USERNAME}
       - TYPEORM_PASSWORD=${TYPEORM_PASSWORD}
-      - TYPEORM_DATABASE=${TYPEORM_DATABASE}
-      - TYPEORM_PORT=5432
+      - TYPEORM_PORT=${TYPEORM_PORT}
       - TYPEORM_HOST=db
     env_file: .env
     volumes:
@@ -46,7 +44,7 @@ services:
       context: ./
       dockerfile: ./frontend/Dockerfile
     ports:
-      - 4001:4001
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
     restart: unless-stopped
     env_file: .env
     networks: 
