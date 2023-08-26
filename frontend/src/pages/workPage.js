@@ -1,22 +1,19 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useCookies } from "react-cookie";
 import { getUserResumes, getUserVacancies, sendMessage } from "../utils/api";
-import { SelectedVacanciesContext, UserContext } from "../utils/context";
+import { SelectedVacanciesContext } from "../utils/context";
 import styles from "./page.module.css";
-import { useNavigate } from "react-router-dom";
 import { defaultMessage } from "../utils/constants";
-import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { ProgressBarDefault } from "../components/ProgressBar/ProgressBar";
 import { MenuMain } from "../components/Menu/Menu";
 import { Pro } from "../components/WorkSpaces/Pro";
 import { Lite } from "../components/WorkSpaces/Lite";
+import LoginItem from "../components/LoginItem/LoginItem";
 
 const WorkPage = () => {
-  const navigate = useNavigate();
-  const [cookies, removeCookie] = useCookies(["authorization"]);
+  const [cookies] = useCookies(["authorization"]);
   const token = cookies.authorization;
-  const [userCtx] = useContext(UserContext);
   const [resumes, setResumes] = useState();
   const [vacancies, setVacancies] = useState([]);
   const [selectedVacancies, setSelectedVacancies] = useContext(
@@ -113,33 +110,13 @@ const WorkPage = () => {
     loadData();
   };
 
-  const logout = async () => {
-    removeCookie("authorization");
-    navigate("/start");
-  };
-
   return (
-    <div className={styles.loginMain}>
-      <div className={styles.loginView}>
-        <div className={styles.loginContent}>
-          <div className={styles.MenuLogin}>
+    <div className={styles.mainV2}>
+      <div className={styles.mainV2View}>
+        <div className={styles.mainV2Content}>
+          <div className={styles.menu}>
             <MenuMain activeIndex={version} setActiveIndex={setVersion} />
-            <div className={styles.loginUser}>
-              <a
-                href="https://hh.ru/"
-                target="_blank"
-                rel="noreferrer"
-                className={styles.loginUserName}
-              >
-                {userCtx && userCtx.first_name + " " + userCtx.last_name}
-              </a>
-              <Button
-                className="p-button-danger p-button-outlined"
-                onClick={logout}
-              >
-                Выйти
-              </Button>
-            </div>
+            <LoginItem />
           </div>
           {version === 0 && <Lite
             sendMessageto200Vacancies={sendMessageto200Vacancies}

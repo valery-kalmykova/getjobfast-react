@@ -52,8 +52,8 @@ const SuccessLoginPage = () => {
   }, []);
 
   return (
-    <div className={styles.startMain}>
-      {userCtx && <h1 className={styles.successLoginTitle}>Привет, {userCtx.first_name}</h1>}
+    <div className={styles.mainV1}>
+      {userCtx && <h1 className={styles.titleV2}>Привет, {userCtx.first_name}</h1>}
       <p className={styles.successLoginMsg}>Авторизация на Get job fast прошла успешно</p>
       <Link to="/" className={styles.navigateBtn}>
         Перейти в рабочее пространство

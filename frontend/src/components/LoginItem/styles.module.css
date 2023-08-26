@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  gap: 10px;
+  align-self: flex-end;
+  align-items: center;
+}
+
+.loginUserName {
+  text-decoration: none;
+  color: #061d23;
+}
+
+.loginUserName:hover {
+  color: var(--green-700);
+}

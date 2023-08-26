@@ -6,6 +6,7 @@ import { DatatableUsers } from "../components/Datatable/datatable-users";
 import { UserContext } from "../utils/context";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
+import LoginItem from "../components/LoginItem/LoginItem";
 
 const AdminPage = () => {
   const [cookies] = useCookies(["authorization"]);
@@ -26,25 +27,37 @@ const AdminPage = () => {
     getData();
   }, []);
 
-  if (currentUser && (currentUser.role === "admin")) {
+  if (currentUser && currentUser.role === "admin") {
     return (
-      <div className={styles.startMain}>
-        <h1 className={styles.title}>Пользователи</h1>
-        <DatatableUsers users={users} />
+      <div className={styles.mainV2}>
+        <div className={styles.mainV2View}>
+          <div className={styles.mainV2Content}>
+            <div className={styles.menu}>
+              <Link to={"/"} className={styles.navigateBtn}>
+                Вернуться на главную
+              </Link>
+              <LoginItem />
+            </div>
+            <h1 className={styles.title}>Пользователи</h1>
+            <DatatableUsers users={users} />
+          </div>
+        </div>
       </div>
     );
-  } else if (currentUser && (currentUser.role === "user")) {
+  } else if (currentUser && currentUser.role === "user") {
     return (
-      <div className={styles.startMain}>
+      <div className={styles.mainV1}>
         <h1 className={styles.title}>
           У Вас недостаточно прав для просмотра страницы
         </h1>
-        <Link to={"/"} className={styles.navigateBtn}>Вернуться на главную</Link>
+        <Link to={"/"} className={styles.navigateBtn}>
+          Вернуться на главную
+        </Link>
       </div>
     );
   } else {
     return <Layout />;
-  }  
+  }
 };
 
 export default AdminPage;
