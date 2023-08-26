@@ -6,6 +6,8 @@
 
 .expandContainer {
   padding-left: 50px;
+  overflow-y: scroll;
+  max-height: 50vh;
 }
 
 .textCenter {

@@ -1,7 +1,7 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ApiService } from 'src/api/api.service';
-import { UsersService } from 'src/users/users.service';
+// import { ApiService } from 'src/api/api.service';
+// import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
 import { HHAuthGuard } from './guards/hh-auth.guard';
 
@@ -9,8 +9,8 @@ import { HHAuthGuard } from './guards/hh-auth.guard';
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private apiService: ApiService,
-    private usersService: UsersService,
+    // private apiService: ApiService,
+    // private usersService: UsersService,
   ) {}
 
   @UseGuards(HHAuthGuard)

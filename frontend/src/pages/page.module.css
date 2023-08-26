@@ -23,15 +23,11 @@
   border: 5px solid var(--primary-400);
   font-size: 36px;
   font-weight: 700;
+  text-decoration: none;
 }
 
 .startBtn:hover {
   background-color: var(--primary-300);
-}
-
-.startBtnLink {
-  text-decoration: none;
-  color: #061D23;
 }
 
 .loginMain{
@@ -199,4 +195,34 @@
   margin: 20px auto 0;
   text-align: center;
   color: #D32F2F;
+}
+
+.successLoginTitle {
+  font-size: 76px;
+  margin: 0 0 50px 0;
+}
+
+.successLoginMsg {
+  font-size: 56px;
+  margin: 0 0 50px 0;
+  text-align: center;
+}
+
+.successLoginNavigateBtn {
+  height: 70px;
+  width: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background-color: var(--primary-400);
+  color: #fff;
+  border-radius: 10px;
+  border: 2px solid var(--primary-400);
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.successLoginNavigateBtn:hover {
+  background-color: var(--primary-300);
 }

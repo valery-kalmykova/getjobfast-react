@@ -1,4 +1,6 @@
-import {IsNotEmpty, IsString } from 'class-validator';
+import {IsNotEmpty, IsString, IsArray, IsEnum } from 'class-validator';
+import { Type } from 'class-transformer';
+import { USER_ROLE } from '../types/types';
 
 export class CreateUserDto {
   @IsString()
@@ -16,6 +18,9 @@ export class CreateUserDto {
   @IsNotEmpty()
   phone: string;
   @IsString()
-  @IsNotEmpty()
-  resumes: string;
+  title: string;  
+  @Type(() => Number)
+  total_experience_months: number;
+  @IsArray()
+  experience: []
 }

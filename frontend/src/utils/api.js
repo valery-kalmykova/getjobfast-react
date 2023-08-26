@@ -81,3 +81,15 @@ export const saveUser = async (token, formData) => {
     .then(checkResponse)
     .then((data) => data);
 };
+
+export const getUsersAll = async (token) => {
+  return fetch(`${URL}/users/all`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  })
+    .then(checkResponse)
+    .then((data) => data);
+};

@@ -9,8 +9,8 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { ProgressBarDefault } from "../components/ProgressBar/ProgressBar";
 import { MenuMain } from "../components/Menu/Menu";
-import { Pro } from "./pro";
-import { Lite } from "./lite";
+import { Pro } from "../components/WorkSpaces/Pro";
+import { Lite } from "../components/WorkSpaces/Lite";
 
 const WorkPage = () => {
   const navigate = useNavigate();

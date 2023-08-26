@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { DataSource } from 'typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApiModule } from './api/api.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ApiModule } from './api/api.module';
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '../.env' }),
     ApiModule,
+    UsersModule
   ],
   controllers: [AppController],
   providers: [],
