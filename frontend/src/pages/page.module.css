@@ -1,4 +1,4 @@
-.startMain {
+.mainV1 {
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -7,34 +7,7 @@
   justify-content: center;
 }
 
-.startTitle {
-  font-size: 92px;
-}
-
-.startBtn {
-  height: 100px;
-  width: 350px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--primary-400);
-  color: #fff;
-  border-radius: 10px;
-  border: 5px solid var(--primary-400);
-  font-size: 36px;
-  font-weight: 700;
-}
-
-.startBtn:hover {
-  background-color: var(--primary-300);
-}
-
-.startBtnLink {
-  text-decoration: none;
-  color: #061D23;
-}
-
-.loginMain{
+.mainV2{
   margin: 40px 0;
   display: flex;
   flex-direction: column;
@@ -42,7 +15,16 @@
   justify-content: center;
 }
 
-.loginView {
+.titleV1 {
+  font-size: 92px;
+}
+
+.titleV2 {
+  font-size: 60px;
+  margin: 0 0 50px 0;
+}
+
+.mainV2View {
   max-height: 92vh;
   width: 95vw;
   max-width: 1400px;
@@ -52,22 +34,22 @@
   border-radius: 10px;
 }
 
-.loginView::-webkit-scrollbar {
+.mainV2View::-webkit-scrollbar {
   width: 12px;               /* width of the entire scrollbar */
 }
 
-.loginView::-webkit-scrollbar-track {
+.mainV2View::-webkit-scrollbar-track {
   background: var(--surface-200);        /* color of the tracking area */
   border-radius: 10px;
 }
 
-.loginView::-webkit-scrollbar-thumb {
+.mainV2View::-webkit-scrollbar-thumb {
   background-color: var(--surface-400);    /* color of the scroll thumb */
   border-radius: 10px;       /* roundness of the scroll thumb */
   /* border: 3px solid orange;  creates padding around scroll thumb */
 }
 
-.loginContent {
+.mainV2Content {
   width: 100%;
   height: 100%;
   padding: 40px;
@@ -75,128 +57,38 @@
   flex-direction: column;
 }
 
-.MenuLogin {
+.menu {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-}
-
-.loginUser {
-  display: flex;
-  gap: 10px;
-  align-self: flex-end;
-  align-items: center;
-}
-
-.loginUserName {
-  text-decoration: none;
-  color: #061D23;
-}
-
-.loginUserName:hover {
-  color: var(--green-700);
-}
-
-.loginUserLogout {
-  height: 30px;
-  width: 70px;
-  border: none;  
-  border-radius: 5px;
-  background-color: #BF705E;
-  cursor: pointer;
-}
-
-.loginUserLogout:hover {
-  background-color: #E5D5CB;
-}
-
-.loginTitle{
-  font-size: 24px;
-  margin-top: 24px;
-}
-
-.loginBtns {
-  display: flex;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.loginBtn {
-  border: none;  
-  border-radius: 10px;
-  background-color: #BF705E;
-  min-height: 60px;
-  width: 300px;
-  font-size: 20px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.loginBtn:hover {
-  background-color: #E5D5CB;
-}
-
-.loginListResumes {
-  padding: 0; 
-  margin: 0;
-  display: flex;
-  gap: 5px;  
-  flex-wrap: wrap;
-}
-
-.loginListVacancies {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;  
-  margin-bottom: 40px;
-}
-
-.loginVacanciesBtns {
-  display: flex;
-  gap: 5px;
-  margin-bottom: 20px;
-}
-
-.loginVacanciesBtn {
-  border: 1px solid rgba(10, 58, 33, .2);  
-  border-radius: 10px;
-  min-height: 50px;
-  width: 200px;
-  font-size: 20px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.BtnCheck {
-  background-color: #BF705E;
-}
-
-.BtnUnCheck {
-  background-color: transparent
-}
-
-.loginVacanciesBtn:hover {
-  background-color: #E5D5CB;
-}
-
-.loginTextarea {
-  width: 95%;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-  margin-top: 10px;
-}
-
-.pagination__btn {
-  cursor: pointer;
 }
 
 .errorText {
   margin: 20px auto 0;
   text-align: center;
   color: #D32F2F;
+}
+
+.successLoginMsg {
+  font-size: 40px;
+  margin: 0 0 50px 0;
+  text-align: center;
+}
+
+.navigateBtn {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background-color: var(--primary-400);
+  color: #fff;
+  border-radius: 10px;
+  border: 2px solid var(--primary-400);
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.navigateBtn:hover {
+  background-color: var(--primary-300);
 }

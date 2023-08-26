@@ -1,26 +1,26 @@
 import React from "react";
-import styles from "./page.module.css";
+import styles from "./styles.module.css";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
-import { DatatableVacancies } from "../components/Datatable/datatable";
-import { Resumes } from "../components/Resumes/Resumes";
+import { DatatableVacancies } from "../Datatable/datatable-vacancies";
+import { Resumes } from "../Resumes/Resumes";
 
 const Pro = ({ vacanciesP, resumesP, sendMessagetoSelectedVacancies, message, setMessage }) => {
   return (
     <>
-      <h3 className={styles.loginTitle}>Мои резюме:</h3>
-      <ul className={styles.loginListResumes}>
+      <h3 className={styles.title}>Мои резюме:</h3>
+      <ul className={styles.listResumes}>
         <Resumes resumes={resumesP} />
       </ul>
-      <h3 className={styles.loginTitle}>Сопроводительное письмо:</h3>
+      <h3 className={styles.title}>Сопроводительное письмо:</h3>
       <InputTextarea
-        className={styles.loginTextarea}
+        className={styles.textarea}
         rows={5}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         autoResize
       />
-      <div className={styles.loginBtns}>
+      <div className={styles.btns}>
         <Button
           className="p-button p-component"
           onClick={sendMessagetoSelectedVacancies}
@@ -31,7 +31,7 @@ const Pro = ({ vacanciesP, resumesP, sendMessagetoSelectedVacancies, message, se
           </span>
         </Button>
       </div>
-      <h3 className={styles.loginTitle}>
+      <h3 className={styles.title}>
         Подходящие вакансии к выбранному резюме:
       </h3>
       <DatatableVacancies vacancies={vacanciesP} />

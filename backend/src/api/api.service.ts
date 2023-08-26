@@ -39,6 +39,21 @@ export class ApiService {
       );
   }
 
+  async getResumeById(token: string, resume_id: string) {
+    const bearerToken = `Bearer ${token}`;
+    const config = { Authorization: bearerToken };
+    return this.httpService
+      .get(`https://api.hh.ru/resumes/${resume_id}`, {
+        headers: config,
+      })
+      .pipe(map((res) => res.data))
+      .pipe(
+        catchError(() => {
+          throw new ForbiddenException('API not available');
+        }),
+      );
+  }
+
   async getVacanciesSimilarToResume(token: string, resumes_id: string, page: string) {
     const bearerToken = `Bearer ${token}`;
     const config = { Authorization: bearerToken };

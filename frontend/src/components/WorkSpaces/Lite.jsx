@@ -1,20 +1,20 @@
 import React from "react";
-import styles from "./page.module.css";
+import styles from "./styles.module.css";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
 
 const Lite = ({ sendMessageto200Vacancies, message, setMessage }) => {
   return (
     <>
-      <h3 className={styles.loginTitle}>Сопроводительное письмо:</h3>
+      <h3 className={styles.title}>Сопроводительное письмо:</h3>
       <InputTextarea
-        className={styles.loginTextarea}
+        className={styles.textarea}
         rows={5}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         autoResize
       />
-      <div className={styles.loginBtns}>
+      <div className={styles.btns}>
         <Button
           className="p-button p-component"
           onClick={sendMessageto200Vacancies}
