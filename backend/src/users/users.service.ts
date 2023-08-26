@@ -40,6 +40,18 @@ export class UsersService {
     return user;
   }
 
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException();
+    }
+    return user;
+  }
+
   async updateById(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const result = await this.userRepository
       .createQueryBuilder()
@@ -86,6 +98,29 @@ export class UsersService {
         .update(User)
         .set({
           role:USER_ROLE.admin,
+        })
+        .where('id = :id', { id: id })
+        .returning('*')
+        .updateEntity(true)
+        .execute();
+      return result.raw[0];
+    }
+  }
+
+  async removeAdmin(createAdminDto: CreateAdminDto): Promise<User> {
+    const { email, secret } = createAdminDto;
+    if (secret === process.env.SECRET_ADMIN_KEY) {
+      const userByEmail = await this.userRepository.findOne({
+        where: {
+          email: email,
+        },
+      });
+      const { id } = userByEmail;
+      const result = await this.userRepository
+        .createQueryBuilder()
+        .update(User)
+        .set({
+          role:USER_ROLE.user,
         })
         .where('id = :id', { id: id })
         .returning('*')

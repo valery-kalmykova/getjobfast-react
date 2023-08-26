@@ -198,19 +198,18 @@
 }
 
 .successLoginTitle {
-  font-size: 76px;
+  font-size: 60px;
   margin: 0 0 50px 0;
 }
 
 .successLoginMsg {
-  font-size: 56px;
+  font-size: 40px;
   margin: 0 0 50px 0;
   text-align: center;
 }
 
-.successLoginNavigateBtn {
-  height: 70px;
-  width: 450px;
+.navigateBtn {
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: center;

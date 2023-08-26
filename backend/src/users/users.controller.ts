@@ -15,9 +15,9 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
-  async findById(@Param('id') id: number): Promise<User> {
-    return this.usersService.findById(id);
+  @Get(':email')
+  async findByEmail(@Param('email') email: string): Promise<User> {
+    return this.usersService.findByEmail(email);
   }
 
   @Post('/create')
@@ -28,5 +28,10 @@ export class UsersController {
   @Post('/create-admin')
   async createAdmin(@Request() req: any, @Body() body: CreateAdminDto): Promise<any> {
     return this.usersService.createAdmin(body);
+  }
+
+  @Post('/remove-admin')
+  async removeAdmin(@Request() req: any, @Body() body: CreateAdminDto): Promise<any> {
+    return this.usersService.removeAdmin(body);
   }
 }

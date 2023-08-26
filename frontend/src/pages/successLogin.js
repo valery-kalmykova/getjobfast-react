@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import styles from "./page.module.css";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import {
-  getOwnUser,
   getUserResumeById,
   getUserResumes,
   saveUser,
 } from "../utils/api";
+import { UserContext } from "../utils/context";
 
 const SuccessLoginPage = () => {
   const [cookies] = useCookies(["authorization"]);
   const token = cookies.authorization;
-  const [userName, setUserName] = useState("");
+  const [userCtx] = useContext(UserContext);
 
   useEffect(() => {
     const getResumes = async () => {
@@ -21,10 +21,8 @@ const SuccessLoginPage = () => {
       const data = await getUserResumeById(token, id);
       return data;
     };
-    const getUser = async () => {
-      const data = await getOwnUser(token);
-      const { first_name, email, middle_name, last_name, phone } = data;
-      setUserName(first_name);
+    const createUser = async () => {
+      const { email, first_name, middle_name, last_name, phone } = userCtx;
       const firstResume = await getResumes();
       const { title, total_experience, experience } = firstResume;
       let experienceArr = [];
@@ -50,14 +48,14 @@ const SuccessLoginPage = () => {
       };
       await saveUser(token, formData)
     };
-    getUser();
+    createUser();
   }, []);
 
   return (
     <div className={styles.startMain}>
-      <h1 className={styles.successLoginTitle}>Привет, {userName}</h1>
+      {userCtx && <h1 className={styles.successLoginTitle}>Привет, {userCtx.first_name}</h1>}
       <p className={styles.successLoginMsg}>Авторизация на Get job fast прошла успешно</p>
-      <Link to="/" className={styles.successLoginNavigateBtn}>
+      <Link to="/" className={styles.navigateBtn}>
         Перейти в рабочее пространство
       </Link>
     </div>

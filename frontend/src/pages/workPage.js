@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useContext, useMemo } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useCookies } from "react-cookie";
 import { getUserResumes, getUserVacancies, sendMessage } from "../utils/api";
-import { UserContext, SelectedVacanciesContext } from "../utils/context";
+import { SelectedVacanciesContext, UserContext } from "../utils/context";
 import styles from "./page.module.css";
 import { useNavigate } from "react-router-dom";
 import { defaultMessage } from "../utils/constants";
@@ -16,12 +16,12 @@ const WorkPage = () => {
   const navigate = useNavigate();
   const [cookies, removeCookie] = useCookies(["authorization"]);
   const token = cookies.authorization;
+  const [userCtx] = useContext(UserContext);
   const [resumes, setResumes] = useState();
   const [vacancies, setVacancies] = useState([]);
   const [selectedVacancies, setSelectedVacancies] = useContext(
     SelectedVacanciesContext
   );
-  const [userCtx, setUserCtx] = useContext(UserContext);
   const [message, setMessage] = useState(defaultMessage);
   const [showDialog, setShowDialog] = useState(false);
   const [totalToSend, setTotalToSend] = useState(0);
@@ -37,14 +37,14 @@ const WorkPage = () => {
     );
   };
 
-  const loadVacancies = (resumeId, page) => {
-    getUserVacancies(token, resumeId, page).then((res) => {
+  const loadVacancies = async (resumeId, page) => {
+    await getUserVacancies(token, resumeId, page).then((res) => {
       setVacancies((vacancies) => [...vacancies, ...filteresList(res)]);
     });
   };
 
-  const loadData = () => {
-    getUserResumes(token).then((res) => {
+  const loadData = async () => {
+    await getUserResumes(token).then((res) => {
       const items = res.items;
       items[0] = { ...items[0], checked: true };
       setResumes(items);
@@ -57,10 +57,6 @@ const WorkPage = () => {
   };
 
   useEffect(() => {
-    sessionStorage.setItem("auth_token", token);
-  }, []);
-
-  useMemo(() => {
     loadData();
   }, []);
 
@@ -119,8 +115,6 @@ const WorkPage = () => {
 
   const logout = async () => {
     removeCookie("authorization");
-    sessionStorage.removeItem("auth_token");
-    setUserCtx({});
     navigate("/start");
   };
 
@@ -137,7 +131,7 @@ const WorkPage = () => {
                 rel="noreferrer"
                 className={styles.loginUserName}
               >
-                {userCtx.first_name + " " + userCtx.last_name}
+                {userCtx && userCtx.first_name + " " + userCtx.last_name}
               </a>
               <Button
                 className="p-button-danger p-button-outlined"

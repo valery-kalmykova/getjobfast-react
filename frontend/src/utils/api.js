@@ -93,3 +93,15 @@ export const getUsersAll = async (token) => {
     .then(checkResponse)
     .then((data) => data);
 };
+
+export const getUserFromDB = async (token, email) => {
+  return fetch(`${URL}/users/${email}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  })
+    .then(checkResponse)
+    .then((data) => data);
+};

@@ -1,35 +1,22 @@
-import { useEffect, useState } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
-import StartPage from "../../pages/start";
-import WorkPage from "../../pages/workPage";
-import { UserContext, SelectedVacanciesContext } from "../../utils/context";
-import { PrivateRoute } from "../PrivateRoute";
+import { useContext, useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
+import { SelectedVacanciesContext, UserContext } from "../../utils/context";
 
 import "primereact/resources/themes/saga-green/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import SuccessLoginPage from "../../pages/successLogin";
+import PrivateRoutes from "../Routes/PrivateRoutes";
+import PublicRoutes from "../Routes/PublicRoutes";
 import { useCookies } from "react-cookie";
 import { getOwnUser } from "../../utils/api";
-import AdminPage from "../../pages/adminPage";
 
 function App() {
-  const [cookies] = useCookies();
-  const [userCtx, setUserCtx] = useState(null);
   const [selectedVacancies, setSelectedVacancies] = useState(null);
-
-  useEffect(() => {
-    const token = cookies.authorization;
-    sessionStorage.setItem("auth_token", token);
-    if (token) {
-      getOwnUser(token).then((res) => {
-        setUserCtx(res);
-      });
-    } else {
-      setUserCtx({});
-    }
-  }, []);
+  const [userCtx, setUserCtx] = useState(null);
 
   return (
     <UserContext.Provider value={[userCtx, setUserCtx]}>
@@ -43,21 +30,34 @@ function App() {
 }
 
 const ApplicationView = () => {
+  const [cookies] = useCookies(["authorization"]);
+  const token = cookies.authorization;
+  const [userCtx, setUserCtx] = useContext(UserContext);
 
-  return (
-    <Router>
-      <Routes>
-        <Route exact path="/start" element={<StartPage />} />
-        <Route exact path="/admin" element={<AdminPage />} />
-        {/* <Route path="/" element={<WorkPage />}/>
-        <Route path="/login" element={<SuccessLoginPage />}/> */}
-        <Route path="/" element={<PrivateRoute />}>
-          <Route path="/" element={<WorkPage />} />
-          <Route path="/login" element={<SuccessLoginPage />} />
-        </Route>
-      </Routes>
-    </Router>
-  );
+  const [auth, setAuth] = useState(null);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const user = await getOwnUser(token);
+        if (user) {
+          setAuth(true);
+          setUserCtx(user)
+        }
+      } catch (err) {
+        setAuth(false);
+      }
+    };
+    checkAuth();
+  }, []);
+
+  if (auth !== null) {
+    const router = createBrowserRouter([
+      auth ? PrivateRoutes() : {},
+      ...PublicRoutes(),
+    ]);
+    return <RouterProvider router={router} />;
+  }
 };
 
 export default App;
