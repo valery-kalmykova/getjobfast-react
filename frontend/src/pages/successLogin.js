@@ -17,35 +17,39 @@ const SuccessLoginPage = () => {
   useEffect(() => {
     const getResumes = async () => {
       const resumesMine = await getUserResumes(token);
-      const { id } = resumesMine.items[0];
-      const data = await getUserResumeById(token, id);
-      return data;
+      if (resumesMine.items.length === 0) {
+        return null
+      } else {
+        const { id } = resumesMine.items[0];
+        const data = await getUserResumeById(token, id);
+        return data;
+      }      
     };
     const createUser = async () => {
       const { email, first_name, middle_name, last_name, phone } = userCtx;
-      const firstResume = await getResumes();
-      const { title, total_experience, experience } = firstResume;
-      let experienceArr = [];
-      experience.map((item) => {
-        const itemOnj = {
-          start: item.start,
-          end: item.end,
-          company: item.company,
-          position: item.position,
-          description: item.description,
-        };
-        experienceArr.push(itemOnj)
-      });
-      const formData = {
+      let formData = {
         email: email,
         first_name: first_name,
         middle_name: middle_name,
         last_name: last_name,
         phone: phone,
-        title: title,
-        total_experience_months: total_experience.months,
-        experience: experienceArr
       };
+      const firstResume = await getResumes();      
+      if (firstResume !==null) {
+        const { title, total_experience, experience } = firstResume;
+        let experienceArr = [];
+        experience.map((item) => {
+          const itemOnj = {
+            start: item.start,
+            end: item.end,
+            company: item.company,
+            position: item.position,
+            description: item.description,
+          };
+          experienceArr.push(itemOnj)
+        });
+        formData = {...formData, title: title, total_experience_months: total_experience, experience: experienceArr}
+      }      
       await saveUser(token, formData)
     };
     createUser();
