@@ -17,6 +17,7 @@ services:
  
   backend:
     container_name: backend-getjobfast
+    image: valerykalmykova/getjobfast:back
     build:
       context: ./backend
       dockerfile: ./Dockerfile
@@ -40,6 +41,7 @@ services:
 
   nginx:
     container_name: frontend
+    image: valerykalmykova/getjobfast:front
     build:
       context: ./
       dockerfile: ./frontend/Dockerfile
